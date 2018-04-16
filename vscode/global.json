@@ -1,0 +1,33 @@
+{
+    "editor.fontSize": 15,
+    "editor.fontFamily": "Fira Mono",
+    "workbench.iconTheme": "vscode-icons",
+    "editor.renderWhitespace": "boundary",
+    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#1A1A1A",
+        "statusBar.noFolderBackground": "#212121",
+        "statusBar.debuggingBackground": "#263238"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "terminal.integrated.fontFamily": "Consolas",
+    "terminal.integrated.fontSize": 14,
+    "typescript.check.npmIsInstalled": false,
+    "typescript.validate.enable": false,
+    "files.trimTrailingWhitespace": true,
+    "sublimeTextKeymap.promptV3Features": true,
+    "window.zoomLevel": 0,
+
+    "python.linting.mypyArgs": [
+        "--ignore-missing-imports",
+        "--follow-imports=silent"
+    ],
+    "python.formatting.yapfPath": "yapf",
+
+    "autoDocstring.docstringFormat": "google",
+    "cSpell.userWords": [
+        "kubeadm",
+        "kubelet"
+    ],
+}
