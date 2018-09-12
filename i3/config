@@ -18,7 +18,8 @@ set $mod Mod1
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:Noto Sans,FontAwesome 8
+font pango:Noto Sans Display,FontAwesome 8
+
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -93,6 +94,7 @@ bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
+set $exec exec --no-startup-id
 
 set $ws1 "1: "
 set $ws2 "2: "
@@ -128,6 +130,14 @@ bindsym $mod+Shift+7 move container to workspace $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
+
+
+# switch to output
+bindsym $mod+Control+Shift+Left focus output eDP-1-1
+bindsym $mod+Control+Shift+Right focus output HDMI-0
+
+# Lock with i3-fancy
+bindsym $mod+Control+Shift+L i3lock-fancy -f monospace
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -165,18 +175,61 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3blocks
+        status_command SCRIPT_DIR=~/.config/i3blocks/blocklets i3blocks
+        separator_symbol ""
+        colors {
+                separator  #666666
+                background #222222
+                statusline #dddddd
+                focused_workspace  #0088CC #0088CC #ffffff
+                active_workspace   #333333 #333333 #ffffff
+                inactive_workspace #333333 #333333 #888888
+                urgent_workspace   #2f343a #900000 #ffffff
+        }
 }
 
-new_window pixel 1
-exec xrandr --dpi 125
+client.focused          #0088CC #0088CC #ffffff #dddddd
+client.urgent           #2f343a #900000 #ffffff #900000
+client.focused_inactive #555555 #555555 #AAAAAA #292d2e
+client.unfocused        #555555 #555555 #AAAAAA #292d2e
 
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+
+# Audio
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+
+# send PrtSc to /tmp
+bindsym --release Print $exec scrot '/tmp/%s.png'
+bindsym --release Shift+Print $exec scrot -u '/tmp/%s.png'
+
+
+# open file explorer
+bindsym $mod+Shift+t $exec thunar
+
+new_window pixel 1
+
+
+# exec xrandr --dpi 125
+
+# extend monitor
+#exec xrandr --output HDMI-1-1 --off --output eDP-1-1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-0 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --output DP-1-1 --off --output DP-0 --off
+
+# external monitor only
+exec xrandr --output HDMI-1-1 --off --output eDP-1-1 --off --output DP-1 --off --output HDMI-0 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-1-1 --off --output DP-0 --off
+
+exec --no-startup-id nm-applet --sm-disable
+exec_always feh --bg-scale /home/trongkha/Pictures/wall.jpg
+
+exec google-chrome
+exec code
+exec gitkraken
 
 assign [class="chromium-browser"] $ws1
 assign [class="Code"] $ws2
 assign [class="GitKraken"] $ws4
 
 
-exec chromium-browser
-exec code
-exec gitkraken
