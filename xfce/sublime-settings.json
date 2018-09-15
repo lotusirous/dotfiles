@@ -1,0 +1,15 @@
+{
+	"color_scheme": "Packages/Theme - Flatland/Flatland Dark.tmTheme",
+	"ensure_newline_at_eof_on_save": true,
+	"font_size": 14,
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"line_padding_bottom": 1,
+	"line_padding_top": 1,
+	"theme": "Flatland Dark.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true
+}
