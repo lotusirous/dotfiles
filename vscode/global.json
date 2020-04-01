@@ -1,33 +1,138 @@
 {
-    "editor.fontSize": 15,
-    "editor.fontFamily": "Fira Mono",
-    "workbench.iconTheme": "vscode-icons",
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.fontSize": 14,
     "editor.renderWhitespace": "boundary",
-    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-    "workbench.colorCustomizations": {
-        "statusBar.background": "#1A1A1A",
-        "statusBar.noFolderBackground": "#212121",
-        "statusBar.debuggingBackground": "#263238"
-    },
-    "editor.tabSize": 4,
-    "editor.insertSpaces": true,
-    "terminal.integrated.fontFamily": "Consolas",
-    "terminal.integrated.fontSize": 14,
-    "typescript.check.npmIsInstalled": false,
-    "typescript.validate.enable": false,
-    "files.trimTrailingWhitespace": true,
-    "sublimeTextKeymap.promptV3Features": true,
-    "window.zoomLevel": 0,
-
-    "python.linting.mypyArgs": [
-        "--ignore-missing-imports",
-        "--follow-imports=silent"
+    "editor.multiCursorModifier": "ctrlCmd",
+    "go.lintTool": "golangci-lint",
+    "go.lintFlags": [
+        "--fast"
     ],
-    "python.formatting.yapfPath": "yapf",
-
-    "autoDocstring.docstringFormat": "google",
     "cSpell.userWords": [
-        "kubeadm",
-        "kubelet"
+        "DATASOURCE",
+        "Debugf",
+        "Debugln",
+        "Errorln",
+        "Failer",
+        "Foundf",
+        "GRUSLS",
+        "Glog",
+        "Infof",
+        "Infoln",
+        "Postgres",
+        "RHEL",
+        "Repos",
+        "SAML",
+        "Sqlite",
+        "Syncer",
+        "UUID",
+        "Warnf",
+        "Warnln",
+        "asaskevich",
+        "bson",
+        "bulma",
+        "coreutils",
+        "cors",
+        "creational",
+        "dbtest",
+        "docker",
+        "dotenv",
+        "getenv",
+        "glob",
+        "gomock",
+        "gops",
+        "govalidator",
+        "gridfs",
+        "grurnd",
+        "influxdb",
+        "jmoiron",
+        "jsonlogger",
+        "keras",
+        "keytar",
+        "khant",
+        "kube",
+        "kubernetes",
+        "levelno",
+        "lotusirous",
+        "mgmt",
+        "mkdtemp",
+        "mongodb",
+        "moskato",
+        "nolint",
+        "numpy",
+        "oauth",
+        "octocat",
+        "pydantic",
+        "pythonjsonlogger",
+        "serializable",
+        "sklearn",
+        "slsservice",
+        "sqlx",
+        "uvicorn",
+        "vuex",
+        "xerrors"
     ],
+    "window.zoomLevel": 0,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "python.jediEnabled": false,
+    "go.formatTool": "goimports",
+    "go.useLanguageServer": false,
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "git.autofetch": true,
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.lineHeight": 1.1,
+    "files.trimTrailingWhitespace": true,
+    "python.dataScience.sendSelectionToInteractiveWindow": false,
+    "terminal.integrated.shell.osx": "/bin/zsh",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#294A5B",
+        "activityBar.activeBorder": "#007AC7",
+        "statusBar.background" : "#303030",
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+    "C_Cpp.updateChannel": "Insiders",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "[vue]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[yaml]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": true
+        }
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+
+    "go.coverOnSave": true,
+    "go.coverageDecorator": {
+        "type": "gutter",
+        "coveredHighlightColor": "rgba(64,128,128,0.5)",
+        "uncoveredHighlightColor": "rgba(128,64,64,0.25)",
+        "coveredGutterStyle": "blockgreen",
+        "uncoveredGutterStyle": "blockred"
+    },
+    "go.coverOnSingleTest": true
+
 }
