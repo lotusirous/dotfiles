@@ -73,6 +73,7 @@ Plug 'vim-utils/vim-man'
 Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
 Plug 'SirVer/ultisnips'
+Plug 'norcalli/snippets.nvim'
 
 
 Plug 'gruvbox-community/gruvbox'
