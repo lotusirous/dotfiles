@@ -90,6 +90,10 @@ Plug 'rust-lang/rust.vim'
 " Breaking bad habit
 Plug 'takac/vim-hardtime'
 
+" Read RFC
+Plug 'mhinz/vim-rfc'
+
+
 call plug#end()
 
 
