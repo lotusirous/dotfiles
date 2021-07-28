@@ -64,6 +64,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'windwp/nvim-autopairs'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'mattn/emmet-vim'
 
 Plug 'dkarter/bullets.vim'
 Plug 'vim-utils/vim-man'
