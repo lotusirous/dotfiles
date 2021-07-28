@@ -1,17 +1,14 @@
-" Automatically generated packer.nvim plugin loader code
+-- Automatically generated packer.nvim plugin loader code
 
-if !has('nvim-0.5')
-  echohl WarningMsg
-  echom "Invalid Neovim version for packer.nvim!"
-  echohl None
-  finish
-endif
+if vim.api.nvim_call_function('has', {'nvim-0.5'}) ~= 1 then
+  vim.api.nvim_command('echohl WarningMsg | echom "Invalid Neovim version for packer.nvim! | echohl None"')
+  return
+end
 
-packadd packer.nvim
+vim.api.nvim_command('packadd packer.nvim')
 
-try
+local no_errors, error_msg = pcall(function()
 
-lua << END
   local time
   local profile_info
   local should_profile = false
@@ -46,7 +43,7 @@ local function save_profiles(threshold)
   _G._packer.profile_output = results
 end
 
-time("Luarocks path setup", true)
+time([[Luarocks path setup]], true)
 local package_path_str = "/Users/gru-2019015/.cache/nvim/packer_hererocks/2.1.0-beta3/share/lua/5.1/?.lua;/Users/gru-2019015/.cache/nvim/packer_hererocks/2.1.0-beta3/share/lua/5.1/?/init.lua;/Users/gru-2019015/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/luarocks/rocks-5.1/?.lua;/Users/gru-2019015/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/luarocks/rocks-5.1/?/init.lua"
 local install_cpath_pattern = "/Users/gru-2019015/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
@@ -57,23 +54,28 @@ if not string.find(package.cpath, install_cpath_pattern, 1, true) then
   package.cpath = package.cpath .. ';' .. install_cpath_pattern
 end
 
-time("Luarocks path setup", false)
-time("try_loadstring definition", true)
+time([[Luarocks path setup]], false)
+time([[try_loadstring definition]], true)
 local function try_loadstring(s, component, name)
   local success, result = pcall(loadstring(s))
   if not success then
-    print('Error running ' .. component .. ' for ' .. name)
-    error(result)
+    vim.schedule(function()
+      vim.api.nvim_notify('packer.nvim: Error running ' .. component .. ' for ' .. name .. ': ' .. result, vim.log.levels.ERROR, {})
+    end)
   end
   return result
 end
 
-time("try_loadstring definition", false)
-time("Defining packer_plugins", true)
+time([[try_loadstring definition]], false)
+time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
   ["editorconfig-vim"] = {
     loaded = true,
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/editorconfig-vim"
+  },
+  ["emmet-vim"] = {
+    loaded = true,
+    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/emmet-vim"
   },
   ["friendly-snippets"] = {
     loaded = true,
@@ -96,21 +98,9 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/gruvbox"
   },
-  indentLine = {
-    loaded = true,
-    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/indentLine"
-  },
   ["lightline.vim"] = {
     loaded = true,
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/lightline.vim"
-  },
-  ["lspcontainers.nvim"] = {
-    loaded = true,
-    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/lspcontainers.nvim"
-  },
-  neoformat = {
-    loaded = true,
-    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/neoformat"
   },
   nerdtree = {
     loaded = true,
@@ -121,7 +111,6 @@ _G.packer_plugins = {
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/nvim-autopairs"
   },
   ["nvim-compe"] = {
-    config = { "\27LJ\2\n¯\2\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\vsource\1\0\6\vbuffer\2\nvsnip\2\tpath\2\rnvim_lua\2\rnvim_lsp\2\tcalc\2\1\0\f\18documentation\2\19max_menu_width\3d\19max_kind_width\3d\19max_abbr_width\3d\21incomplete_delay\3\3\ndebug\1\18throttle_time\3P\14preselect\venable\15min_length\3\1\17autocomplete\2\fenabled\2\19source_timeout\3È\1\nsetup\ncompe\frequire\0" },
     loaded = true,
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/nvim-compe"
   },
@@ -129,9 +118,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
   },
-  ["nvim-lspinstall"] = {
+  ["nvim-treesitter"] = {
+    config = { "\27LJ\2\n„\2\0\0\4\0\n\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\0025\3\6\0=\3\a\0025\3\b\0=\3\t\2B\0\2\1K\0\1\0\vindent\1\0\1\venable\2\14highlight\1\0\1\venable\2\21ensure_installed\1\0\0\1\17\0\0\tbash\bcss\15dockerfile\ago\ngomod\fgraphql\thtml\15javascript\njsdoc\tjson\blua\vpython\trust\btsx\15typescript\tyaml\nsetup\28nvim-treesitter.configs\frequire\0" },
     loaded = true,
-    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/nvim-lspinstall"
+    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -149,11 +139,9 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/rustfmt"
   },
-  ["splitjoin.vim"] = {
-    commands = { "SplitjoinSplit", "SplitjoinJoin" },
-    loaded = false,
-    needs_bufread = true,
-    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/opt/splitjoin.vim"
+  ["snippets.nvim"] = {
+    loaded = true,
+    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/snippets.nvim"
   },
   tabular = {
     loaded = true,
@@ -163,10 +151,9 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/undotree"
   },
-  ["vim-better-whitespace"] = {
-    config = { "\27LJ\2\n×\1\0\0\3\0\6\0\0176\0\0\0009\0\1\0'\2\2\0B\0\2\0016\0\0\0009\0\1\0'\2\3\0B\0\2\0016\0\0\0009\0\1\0'\2\4\0B\0\2\0016\0\0\0009\0\1\0'\2\5\0B\0\2\1K\0\1\0$let g:strip_whitelines_at_eof=1%let g:strip_whitespace_confirm=0%let g:strip_whitespace_on_save=1&let g:better_whitespace_enabled=1\bcmd\bvim\0" },
+  ["vim-be-good"] = {
     loaded = true,
-    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/vim-better-whitespace"
+    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/vim-be-good"
   },
   ["vim-commentary"] = {
     loaded = true,
@@ -184,6 +171,15 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/vim-go"
   },
+  ["vim-hardtime"] = {
+    loaded = true,
+    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/vim-hardtime"
+  },
+  ["vim-pydocstring"] = {
+    loaded = false,
+    needs_bufread = true,
+    path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/opt/vim-pydocstring"
+  },
   ["vim-rfc"] = {
     loaded = true,
     path = "/Users/gru-2019015/.local/share/nvim/site/pack/packer/start/vim-rfc"
@@ -198,33 +194,26 @@ _G.packer_plugins = {
   }
 }
 
-time("Defining packer_plugins", false)
+time([[Defining packer_plugins]], false)
 -- Config for: gitsigns.nvim
-time("Config for gitsigns.nvim", true)
+time([[Config for gitsigns.nvim]], true)
 try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
-time("Config for gitsigns.nvim", false)
--- Config for: vim-better-whitespace
-time("Config for vim-better-whitespace", true)
-try_loadstring("\27LJ\2\n×\1\0\0\3\0\6\0\0176\0\0\0009\0\1\0'\2\2\0B\0\2\0016\0\0\0009\0\1\0'\2\3\0B\0\2\0016\0\0\0009\0\1\0'\2\4\0B\0\2\0016\0\0\0009\0\1\0'\2\5\0B\0\2\1K\0\1\0$let g:strip_whitelines_at_eof=1%let g:strip_whitespace_confirm=0%let g:strip_whitespace_on_save=1&let g:better_whitespace_enabled=1\bcmd\bvim\0", "config", "vim-better-whitespace")
-time("Config for vim-better-whitespace", false)
--- Config for: nvim-compe
-time("Config for nvim-compe", true)
-try_loadstring("\27LJ\2\n¯\2\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\vsource\1\0\6\vbuffer\2\nvsnip\2\tpath\2\rnvim_lua\2\rnvim_lsp\2\tcalc\2\1\0\f\18documentation\2\19max_menu_width\3d\19max_kind_width\3d\19max_abbr_width\3d\21incomplete_delay\3\3\ndebug\1\18throttle_time\3P\14preselect\venable\15min_length\3\1\17autocomplete\2\fenabled\2\19source_timeout\3È\1\nsetup\ncompe\frequire\0", "config", "nvim-compe")
-time("Config for nvim-compe", false)
-
--- Command lazy-loads
-time("Defining lazy-load commands", true)
-vim.cmd [[command! -nargs=* -range -bang -complete=file SplitjoinJoin lua require("packer.load")({'splitjoin.vim'}, { cmd = "SplitjoinJoin", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-vim.cmd [[command! -nargs=* -range -bang -complete=file SplitjoinSplit lua require("packer.load")({'splitjoin.vim'}, { cmd = "SplitjoinSplit", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-time("Defining lazy-load commands", false)
-
+time([[Config for gitsigns.nvim]], false)
+-- Config for: nvim-treesitter
+time([[Config for nvim-treesitter]], true)
+try_loadstring("\27LJ\2\n„\2\0\0\4\0\n\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\0025\3\6\0=\3\a\0025\3\b\0=\3\t\2B\0\2\1K\0\1\0\vindent\1\0\1\venable\2\14highlight\1\0\1\venable\2\21ensure_installed\1\0\0\1\17\0\0\tbash\bcss\15dockerfile\ago\ngomod\fgraphql\thtml\15javascript\njsdoc\tjson\blua\vpython\trust\btsx\15typescript\tyaml\nsetup\28nvim-treesitter.configs\frequire\0", "config", "nvim-treesitter")
+time([[Config for nvim-treesitter]], false)
+vim.cmd [[augroup packer_load_aucmds]]
+vim.cmd [[au!]]
+  -- Filetype lazy-loads
+time([[Defining lazy-load filetype autocommands]], true)
+vim.cmd [[au FileType python ++once lua require("packer.load")({'vim-pydocstring'}, { ft = "python" }, _G.packer_plugins)]]
+time([[Defining lazy-load filetype autocommands]], false)
+vim.cmd("augroup END")
 if should_profile then save_profiles() end
 
-END
+end)
 
-catch
-  echohl ErrorMsg
-  echom "Error in packer_compiled: " .. v:exception
-  echom "Please check your config for correctness"
-  echohl None
-endtry
+if not no_errors then
+  vim.api.nvim_command('echohl ErrorMsg | echom "Error in packer_compiled: '..error_msg..'" | echom "Please check your config for correctness" | echohl None')
+end

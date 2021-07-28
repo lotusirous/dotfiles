@@ -1,9 +1,6 @@
-
 local function init()
-  vim.cmd[[colorscheme gruvbox]]
-  vim.cmd[[set background=dark]]
+    vim.cmd [[colorscheme gruvbox]]
+    vim.cmd [[set background=dark]]
 end
 
-return {
-  init=init,
-}
+return {init = init}

@@ -19,11 +19,28 @@ local function packer_startup()
         -- Packer --
         use 'wbthomason/packer.nvim'
 
+        -- game
+        use 'ThePrimeagen/vim-be-good'
         -- undo tree
         use 'mbbill/undotree'
 
         -- quick fix list
         use 'tpope/vim-unimpaired'
+        use {
+            'nvim-treesitter/nvim-treesitter',
+            run = 'TSUpdate',
+            config = function()
+                require'nvim-treesitter.configs'.setup {
+                    ensure_installed = {
+                        'bash', 'css', 'dockerfile', 'go', 'gomod', 'graphql',
+                        'html', 'javascript', 'jsdoc', 'json', 'lua', 'python',
+                        'rust', 'tsx', 'typescript', 'yaml'
+                    },
+                    highlight = {enable = true},
+                    indent = {enable = true}
+                }
+            end
+        }
 
         -- git
         use 'tpope/vim-fugitive'
@@ -34,100 +51,75 @@ local function packer_startup()
             config = function() require('gitsigns').setup() end
         }
 
+        -- format and code edit
         use 'editorconfig/editorconfig-vim'
 
         use 'windwp/nvim-autopairs'
 
+        use 'mattn/emmet-vim'
         -- markdown
         -- This plugin will conflict with compe because
-        -- it removes the auto competion
+        -- it removes the auto completion
         -- use 'dkarter/bullets.vim'
 
         -- UI
-        use 'Yggdroot/indentLine'
+        -- use 'Yggdroot/indentLine'
         use 'itchyny/lightline.vim'
-        use {
-            'ntpeters/vim-better-whitespace',
-            config = function()
-                vim.cmd("let g:better_whitespace_enabled=1")
-                vim.cmd("let g:strip_whitespace_on_save=1")
-                vim.cmd("let g:strip_whitespace_confirm=0")
-                vim.cmd("let g:strip_whitelines_at_eof=1")
-            end
-        }
+        -- use {
+        --     'ntpeters/vim-better-whitespace',
+        --     config = function()
+        --         vim.cmd("let g:better_whitespace_enabled=1")
+        --         vim.cmd("let g:strip_whitespace_on_save=1")
+        --         vim.cmd("let g:strip_whitespace_confirm=0")
+        --         vim.cmd("let g:strip_whitelines_at_eof=1")
+        --     end
+        -- }
 
-        -- go development
+        -- Development life
         use 'fatih/vim-go'
+
+        -- kotlin
+        -- use 'udalov/kotlin-vim'
 
         -- rust
         use 'rust-lang/rust.vim'
         use 'rust-lang-nursery/rustfmt'
 
+        -- Utils
         -- explorer tree
         use 'preservim/nerdtree'
-
         -- Best theme ever
         use 'gruvbox-community/gruvbox'
 
         -- Language Support --
-        use 'kabouzeid/nvim-lspinstall'
         use 'neovim/nvim-lspconfig'
-        use 'lspcontainers/lspcontainers.nvim'
-        use {
-            'hrsh7th/nvim-compe',
-            requires = {'neovim/nvim-lspconfig'},
-            config = function()
-                require'compe'.setup {
-                    enabled = true,
-                    autocomplete = true,
-                    debug = false,
-                    min_length = 1,
-                    preselect = 'enable',
-                    throttle_time = 80,
-                    source_timeout = 200,
-                    incomplete_delay = 400,
-                    max_abbr_width = 100,
-                    max_kind_width = 100,
-                    max_menu_width = 100,
-                    documentation = true,
-
-                    source = {
-                        path = true,
-                        buffer = true,
-                        calc = true,
-                        nvim_lsp = true,
-                        nvim_lua = true,
-                        vsnip = true
-                        -- ultisnips = true
-                    }
-                }
-
-            end
-        }
-        -- use {'tzachar/compe-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-compe'}
+        use {'hrsh7th/nvim-compe', requires = {'neovim/nvim-lspconfig'}}
 
         use {'hrsh7th/vim-vsnip', requires = {'hrsh7th/nvim-compe'}}
+        use {'norcalli/snippets.nvim', requires = {'hrsh7th/nvim-compe'}}
         -- use {'SirVer/ultisnips', requires = {'hrsh7th/nvim-compe'}}
         use {'rafamadriz/friendly-snippets', requires = {'hrsh7th/nvim-compe'}}
+
         -- search code base
         use {'junegunn/fzf', run = function() vim.fn['fzf#install']() end}
         use 'junegunn/fzf.vim'
 
         -- utils
-        use {
-            'AndrewRadev/splitjoin.vim',
-            cmd = {'SplitjoinSplit', 'SplitjoinJoin'}
-        }
+        -- use 'AndrewRadev/splitjoin.vim'
         use 'godlygeek/tabular'
         use 'junegunn/vim-easy-align'
 
-        -- comment
+        -- utils
         use 'tpope/vim-commentary'
-
         use 'mhinz/vim-rfc'
 
-        use 'sbdchd/neoformat'
+        use 'takac/vim-hardtime'
 
+        use {
+            'heavenshell/vim-pydocstring',
+            ft = {'python'},
+            run = 'make install'
+        }
     end)
 end
 

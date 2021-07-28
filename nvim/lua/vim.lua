@@ -5,20 +5,6 @@ local function set_vim_g()
 end
 
 local function set_vim_o()
-    local settings = {
-        backup = false,
-        errorbells = false,
-        expandtab = true,
-        hidden = true,
-        scrolloff = 3,
-        softtabstop = 2,
-        showmode = false,
-        termguicolors = true
-    }
-
-    -- Generic vim.o
-    for k, v in pairs(settings) do vim.o[k] = v end
-
     -- Custom vim.o
     vim.o.shortmess = vim.o.shortmess .. 'c'
 
@@ -78,6 +64,9 @@ local function set_vim_o()
     -- delays and poor user experience.
     vim.cmd('set updatetime=50')
 
+    -- always show signcolumn
+    -- this prvent the left line show/hide unexpected
+    vim.cmd('set signcolumn=yes')
     -- Don't pass messages to |ins-completion-menu|.
     vim.cmd('set shortmess+=c')
 
@@ -89,10 +78,16 @@ local function set_vim_wo()
     vim.wo.wrap = false
 end
 
+local function set_python()
+    vim.cmd('au BufNewFile,BufRead *.py set foldmethod=indent')
+    vim.cmd('set nofoldenable')
+end
+
 local function init()
     set_vim_g()
     set_vim_o()
     set_vim_wo()
+    set_python()
 end
 
 return {init = init}

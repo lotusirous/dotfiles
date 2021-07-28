@@ -1,6 +1,8 @@
+-- The supported lsp is here: https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig
 -- some example: https://github.com/tomaskallup/dotfiles/blob/master/nvim/lua/plugins/nvim-lspconfig.lua
 -- https://github.com/lukas-reineke/dotfiles/blob/master/vim/lua/lsp/init.lua
 local lspconfig = require "lspconfig"
+local util = require 'lspconfig/util'
 
 vim.fn.sign_define("LspDiagnosticsSignError", {
     texthl = "LspDiagnosticsSignError",
@@ -24,6 +26,17 @@ vim.fn.sign_define("LspDiagnosticsSignInformation", {
 })
 
 local on_attach = function(client, bufnr)
+    -- TODO(khant): move this if to other section
+    if client.name == "tsserver" then
+        client.resolved_capabilities.document_formatting = false
+    end
+
+    if client.name == "efm" then
+        client.resolved_capabilities.goto_definition = false
+    end
+
+    -- End ugly part
+
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
@@ -58,6 +71,7 @@ local on_attach = function(client, bufnr)
                    opts)
     buf_set_keymap('n', '<space>q',
                    '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+    buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 
     -- Set some keybinds conditional on server capabilities
     if client.resolved_capabilities.document_formatting then
@@ -88,6 +102,7 @@ local on_attach = function(client, bufnr)
         vim.cmd [[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()]]
         vim.cmd [[augroup END]]
     end
+
 end
 
 local lua_settings = {
@@ -163,6 +178,11 @@ local function make_efm_languages()
         lintSource = "mypy"
     }
 
+    local pylint = {
+        lintCommand = "pylint --output-format text --score no --msg-template {path}:{line}:{column}:{C}:{msg} ${INPUT}",
+        lintFormats = {"%f:%l:%c:%t:%m"},
+        lintOffsetColumns = 1
+    }
     local misspell = {
         lintCommand = "misspell",
         lintIgnoreExitCode = true,
@@ -171,18 +191,25 @@ local function make_efm_languages()
         lintSource = "misspell"
     }
 
-    local golint = {
-        lintCommand = "golangci-lint",
-        lintIgnoreExitCode = true
-        -- lintFormats = {"%f:%l:%c: %m"},
-        -- lintSource = "golint"
-    }
+    -- local text = {
+    --     lintCommand = "vale --relative --output line ${INPUT}",
+    --     lintIgnoreExitCode = true,
+    --     lintStdin = false,
+    --     lintFormats = {"%f:%l:%c:%*[^:]:%m"}
+    -- }
 
-    local goimports = {formatCommand = "goimports", formatStdin = true}
+    -- local golint = {
+    --     lintCommand = "golangci-lint",
+    --     lintIgnoreExitCode = true
+    --     -- lintFormats = {"%f:%l:%c: %m"},
+    --     -- lintSource = "golint"
+    -- }
+
+    -- local goimports = {formatCommand = "goimports", formatStdin = true}
 
     local json_jq = {formatCommand = "jq .", formatStdin = true}
 
-    local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
+    -- local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
 
     local shellcheck = {
         lintCommand = "shellcheck -f gcc -x -",
@@ -193,8 +220,20 @@ local function make_efm_languages()
         },
         lintSource = "shellcheck"
     }
-    local prettier = {
-        formatCommand = "prettier --stdin-filepath ${INPUT}",
+    -- local prettier = {
+    --     -- formatCommand = "prettier --stdin-filepath ${INPUT}",
+    --     formatCommand = ([[
+    --       prettier
+    --       ${--config-precedence:configPrecedence}
+    --       ${--tab-width:tabWidth}
+    --       ${--single-quote:singleQuote}
+    --       ${--trailing-comma:trailingComma}
+    --     ]]):gsub("\n", ""),
+    --     formatStdin = true
+    -- }
+
+    local swiftfmt = {
+        formatCommand = "swiftformat stdin", -- npm install lua-fmt
         formatStdin = true
     }
 
@@ -203,12 +242,35 @@ local function make_efm_languages()
         formatStdin = true
     }
 
+    local eslint = {
+        lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
+        lintIgnoreExitCode = true,
+        lintStdin = true,
+        formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+
+        -- lintFormats = {"%f(%l,%c): %tarning %m", "%f(%l,%c): %rror %m"},
+        --
+        lintFormats = {"%f:%l:%c: %m"},
+        -- lintSource = "eslint"
+        formatStdin = true
+    }
+
+    local prettier = {
+        formatCommand = ([[
+        prettier
+        ${--config-precedence:configPrecedence}
+        ${--tab-width:tabWidth}
+        ${--single-quote:singleQuote}
+        ${--trailing-comma:trailingComma}
+    ]]):gsub("\n", "")
+    }
+
     -- Support languages
     return {
         ["="] = {misspell},
         vim = {vint},
         -- go = {golint, goimports},
-        python = {black, isort, mypy},
+        python = {black, isort, mypy, pylint},
         json = {json_jq},
         -- rust = {rustfmt},
         lua = {luafmt},
@@ -217,20 +279,45 @@ local function make_efm_languages()
         scss = {prettier},
         css = {prettier},
         yaml = {prettier},
-        sh = {shellcheck}
+        sh = {shellcheck},
+        typescript = {prettier, eslint},
+        javascript = {prettier, eslint},
+        swift = {swiftfmt}
     }
 end
+
+-- Setup server
+
+-- https://github.com/golang/tools/tree/master/gopls
+lspconfig.gopls.setup {
+    init_options = {completeUnimported = true},
+    settings = {gopls = {analyses = {unusedparams = true}, staticcheck = true}}
+}
 
 local function setup_server()
 
     local servers = {
-        "gopls", "pyright", "rust_analyzer", "clangd", "tsserver", "efm",
-        "sumneko_lua"
+        "gopls", "pyright", "rust_analyzer", "tsserver", "efm", "sourcekit",
+        "dockerls", "ccls", "sumneko_lua"
     }
 
     for _, s in pairs(servers) do
         -- this is a share configuration for all server
         local c = make_config()
+
+        if s == "sourcekit" then c.filetypes = {"swift"} end
+
+        if s == "tsserver" then
+            -- TODO(khant): investigate why the lsp detect .js is javascript.jsx
+            -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/tsserver.lua
+            c.filetypes = {
+                "javascript", "javascriptreact", "typescript",
+                "typescriptreact", "typescript.tsx"
+            }
+            c.root_dir = util.root_pattern("package.json", "tsconfig.json",
+                                           "jsconfig.json", ".git",
+                                           vim.fn.getcwd())
+        end
 
         if s == "sumneko_lua" then
             local sumneko_root_path =
@@ -241,12 +328,12 @@ local function setup_server()
             c.settings = lua_settings
         end
         -- custom gopls setting
-        if s == "gopls" then
-            c.settings = {
-                gopls = {analyses = {unusedparams = true}, staticcheck = true}
-            }
-            c.init_options = {completeUnimported = true}
-        end
+        -- if s == "gopls" then
+        --     c.settings = {
+        --         gopls = {analyses = {unusedparams = true}, staticcheck = true}
+        --     }
+        --     c.init_options = {completeUnimported = true}
+        -- end
 
         if s == "pyright" then
             c.settings = {
@@ -258,11 +345,41 @@ local function setup_server()
                     }
                 }
             }
+            c.before_init = function(params)
+                params.processId = vim.NIL
+            end
             c.init_options = {usePlaceholders = true, completeUnimported = true}
+            c.root_dir = util.root_pattern(".git", vim.fn.getcwd())
+        end
+
+        if s == "dockerls" then
+            c.before_init = function(params)
+                params.processId = vim.NIL
+            end
+            c.root_dir = util.root_pattern(".git", vim.fn.getcwd())
+        end
+
+        if s == "rust_analyzer" then
+            c.root_dir = util.root_pattern(".git", vim.fn.getcwd())
+            c.settings = {
+                ["rust-analyzer"] = {
+                    assist = {
+                        importMergeBehavior = "last",
+                        importPrefix = "by_self"
+                    },
+                    cargo = {loadOutDirsFromCheck = true},
+                    procMacro = {enable = true}
+                }
+            }
+            -- inline hint for the word
+            vim.api.nvim_exec([[
+autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua require'lsp_extensions'.inlay_hints{ prefix = ' » ', highlight = "NonText", enabled = {"TypeHint", "ChainingHint", "ParameterHint" } }
+      ]], false)
         end
 
         if s == "efm" then
-            languages = make_efm_languages()
+            table.remove(c, 1) -- remove autocomplete from efm
+            local languages = make_efm_languages()
             c.init_options = {
                 documentFormatting = true,
                 codeAction = true,
@@ -272,9 +389,9 @@ local function setup_server()
             c.filetypes = vim.tbl_keys(languages)
             c.settings = {
                 rootMarkers = {".git/"},
-                log_level = 1,
-                log_file = "~/efm.log",
                 languages = languages
+                -- log_level = 1,
+                -- log_file = "~/efm.log",
             }
         end
 

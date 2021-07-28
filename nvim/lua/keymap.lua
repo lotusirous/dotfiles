@@ -1,5 +1,4 @@
 local function init()
-
     vim.api.nvim_set_keymap('n', '<C-p>', ':Files<CR>',
                             {noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<leader>ps', ':Rg<CR>',
@@ -24,7 +23,6 @@ local function init()
                             {noremap = true, silent = true})
     vim.api.nvim_set_keymap('n', '<leader>l', ':wincmd l<CR>',
                             {noremap = true, silent = true})
-
 end
 
 return {init = init}
