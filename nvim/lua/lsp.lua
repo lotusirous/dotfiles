@@ -122,7 +122,7 @@ require"lspconfig".efm.setup {
     on_attach = on_attach,
     init_options = {documentFormatting = true},
     root_dir = vim.loop.cwd,
-    filetypes = {"python", "lua", "go", "json", "html", "css", "scss"},
+    filetypes = vim.tbl_keys(efm_languages),
     settings = {languages = efm_languages}
 }
 
