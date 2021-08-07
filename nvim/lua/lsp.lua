@@ -1,5 +1,5 @@
-local sumneko_root_path = "/home/khant/local/lsp/lua-language-server"
-local sumneko_binary = sumneko_root_path .. "/bin/Linux/lua-language-server"
+local sumneko_root_path = "/Users/gru-2019015/local/lsp/lua-language-server"
+local sumneko_binary = sumneko_root_path .. "/bin/lua-language-server"
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -77,6 +77,13 @@ local on_attach = function(client, bufnr)
         vim.cmd [[augroup END]]
     end
 end
+
+-- require "lspconfig".pylsp.setup {
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+--     handlers = handlers,
+--     flags = {debounce_text_changes = 150}
+-- }
 
 require "lspconfig".pyright.setup {
     on_attach = on_attach,
