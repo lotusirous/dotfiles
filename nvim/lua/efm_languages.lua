@@ -23,6 +23,21 @@ local misspell = {
 
 local json_jq = {formatCommand = "jq .", formatStdin = true}
 
+local shellcheck = {
+    lintCommand = "shellcheck -f gcc -x -",
+    lintStdin = true,
+    lintFormats = {
+        "%f=%l:%c: %trror: %m",
+        "%f=%l:%c: %tarning: %m",
+        "%f=%l:%c: %tote: %m"
+    },
+    lintSource = "shellcheck"
+}
+
+local shfmt = {
+    formatCommand = "shfmt ${-i:tabWidth}"
+}
+
 local prettier = {
     formatCommand = ([[
         prettier
@@ -30,7 +45,10 @@ local prettier = {
         ${--tab-width:tabWidth}
         ${--single-quote:singleQuote}
         ${--trailing-comma:trailingComma}
-    ]]):gsub("\n", "")
+    ]]):gsub(
+        "\n",
+        ""
+    )
 }
 
 local luafmt = {
@@ -40,12 +58,14 @@ local luafmt = {
 
 return {
     ["="] = {misspell},
-    go = {golint, goimports},
+    -- go = {golint, goimports},
     python = {black, isort},
     json = {json_jq},
+    javascript = {prettier},
     html = {prettier},
     markdown = {prettier},
     css = {prettier},
     scss = {prettier},
-    lua = {luafmt}
+    lua = {luafmt},
+    sh = {shellcheck, shfmt}
 }
