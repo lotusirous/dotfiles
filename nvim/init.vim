@@ -128,7 +128,12 @@ nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
 
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>` :Marks<CR>
+nnoremap <leader>t :Tags<CR>
 nnoremap <C-p> :Files<CR>
+
+" code search
 nnoremap <leader>ps :Rg<CR>
 
 vnoremap J :m '>+1<CR>gv=gv
@@ -138,6 +143,7 @@ vnoremap K :m '<-2<CR>gv=gv
 nnoremap <leader>y "+y
 vnoremap <leader>y "+y
 nnoremap <leader>Y gg"+yG
+
 
 
 " for nerdtree
@@ -179,6 +185,7 @@ let g:compe.source.emoji = v:false
 
 
 " Since I'm using nerdtree, i dont' need netrw at all.
+"
 let g:loaded_netrw       = 1
 let g:loaded_netrwPlugin = 1
 
