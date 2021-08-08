@@ -55,14 +55,14 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'jremmen/vim-ripgrep'
 
 
 
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
-Plug 'windwp/nvim-autopairs'
+Plug 'tpope/vim-surround'
+" Plug 'windwp/nvim-autopairs'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-easy-align'
@@ -70,7 +70,8 @@ Plug 'junegunn/vim-easy-align'
 Plug 'dkarter/bullets.vim'
 Plug 'vim-utils/vim-man'
 
-
+Plug 'preservim/tagbar'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
 Plug 'SirVer/ultisnips'
@@ -92,6 +93,8 @@ Plug 'takac/vim-hardtime'
 
 " Read RFC
 Plug 'mhinz/vim-rfc'
+" Plug 'vimwiki/vimwiki'
+
 
 
 call plug#end()
@@ -105,6 +108,8 @@ hi Normal guibg=NONE ctermbg=NONE
 
 " add LSP config
 lua require('lsp')
+lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
+
 
 if executable('rg')
     let g:rg_derive_root='true'
@@ -135,6 +140,8 @@ vnoremap <leader>y "+y
 nnoremap <leader>Y gg"+yG
 
 
+" for nerdtree
+nnoremap <leader>n :NERDTreeToggle<CR>
 
 " Compe completion
 inoremap <silent><expr> <C-Space> compe#complete()
@@ -177,10 +184,26 @@ let g:loaded_netrwPlugin = 1
 
 " NERDTREE option
 let NERDTreeMinimalUI=1
+let NERDTreeShowLineNumbers=1
+
+
+let g:UltiSnipsSnippetsDir = "~/.config/nvim/ultisnips"
+let g:UltiSnipsSnippetDirectories = ["ultisnips"]
+
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
 
 
 
 " Enable hard time mode
 let g:hardtime_default_on = 1
 let g:hardtime_showmsg = 1
+
+
+" EasyAlign the code
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
