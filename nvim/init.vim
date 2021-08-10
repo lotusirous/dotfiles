@@ -115,8 +115,15 @@ if executable('rg')
     let g:rg_derive_root='true'
 endif
 
+fun! EmptyRegisters()
+    let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"', '\zs')
+    for r in regs
+        call setreg(r, [])
+    endfor
+endfun
 
 " Wonderfull mapping
+inoremap <C-c> <esc>
 let mapleader = " "
 
 nnoremap <leader>h :wincmd h<CR>
