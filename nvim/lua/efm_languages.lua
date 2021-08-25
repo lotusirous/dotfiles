@@ -1,6 +1,6 @@
 local black = {formatCommand = "black --fast -", formatStdin = true}
 
-local goimports = {formatCommand = "goimports", formatStdin = true}
+-- local goimports = {formatCommand = "goimports", formatStdin = true}
 
 local golint = {
     lintCommand = "golint",
