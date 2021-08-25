@@ -7,17 +7,18 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = {"documentation", "detail", "additionalTextEdits"}
 }
 
-local handlers = {
-    ["textDocument/publishDiagnostics"] = vim.lsp.with(
-        vim.lsp.diagnostic.on_publish_diagnostics,
-        {
-            signs = true,
-            underline = false,
-            update_in_insert = true,
-            virtual_text = {spacing = 4, prefix = "«"}
-        }
-    )
-}
+-- change the error icon
+-- local handlers = {
+--     ["textDocument/publishDiagnostics"] = vim.lsp.with(
+--         vim.lsp.diagnostic.on_publish_diagnostics,
+--         {
+--             signs = true,
+--             underline = false,
+--             update_in_insert = true,
+--             virtual_text = {spacing = 4, prefix = "«"}
+--         }
+--     )
+-- }
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -90,11 +91,17 @@ end
 require "lspconfig".pyright.setup {
     on_attach = on_attach,
     capabilities = capabilities,
-    handlers = handlers,
     flags = {debounce_text_changes = 150}
 }
 
-require "lspconfig".tsserver.setup {on_attach = on_attach}
+require "lspconfig".tsserver.setup {
+    capabilities = capabilities,
+    on_attach = function(client, bufnr) -- disable formatter, use efm to format
+        client.resolved_capabilities.document_formatting = false
+        on_attach(client, bufnr)
+    end,
+    flags = {debounce_text_changes = 150}
+}
 
 require "lspconfig".clangd.setup {
     on_attach = on_attach,
@@ -113,6 +120,7 @@ require "lspconfig".clangd.setup {
 
 require "lspconfig".gopls.setup {
     on_attach = on_attach,
+    capabilities = capabilities,
     cmd = {"gopls", "serve"},
     settings = {gopls = {analyses = {unusedparams = true}, staticcheck = true}}
 }
@@ -133,7 +141,6 @@ require "lspconfig".efm.setup {
     init_options = {documentFormatting = true},
     root_dir = vim.loop.cwd,
     filetypes = vim.tbl_keys(efm_languages),
-    -- filetypes = {"python", "lua", "go", "json", "html", "css", "scss"},
     settings = {languages = efm_languages}
 }
 
