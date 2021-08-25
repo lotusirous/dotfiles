@@ -66,9 +66,10 @@ Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-easy-align'
+" Plug 'jiangmiao/auto-pairs'
 
 Plug 'dkarter/bullets.vim'
-Plug 'vim-utils/vim-man'
+" Plug 'vim-utils/vim-man'
 
 Plug 'preservim/tagbar'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -115,6 +116,7 @@ if executable('rg')
     let g:rg_derive_root='true'
 endif
 
+" use this function by :call EmptyRegisters()
 fun! EmptyRegisters()
     let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"', '\zs')
     for r in regs
@@ -191,6 +193,8 @@ let g:compe.source.luasnip = v:false
 let g:compe.source.emoji = v:false
 
 
+let g:python_host_prog="~/.pyenv/versions/2.7.18/bin/python"
+
 " Since I'm using nerdtree, i dont' need netrw at all.
 "
 let g:loaded_netrw       = 1
@@ -210,7 +214,7 @@ nmap <F8> :TagbarToggle<CR>
 
 
 " Enable hard time mode
-let g:hardtime_default_on = 1
+let g:hardtime_default_on = 0
 let g:hardtime_showmsg = 1
 
 
