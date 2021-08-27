@@ -76,7 +76,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
 Plug 'SirVer/ultisnips'
-Plug 'norcalli/snippets.nvim'
 
 
 Plug 'gruvbox-community/gruvbox'
@@ -85,7 +84,7 @@ Plug 'mbbill/undotree'
 Plug 'preservim/nerdtree'
 
 
-Plug 'fatih/vim-go'
+" Plug 'fatih/vim-go'
 Plug 'rust-lang/rust.vim'
 
 
@@ -224,4 +223,11 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+
+
+" vim go 
+" let g:go_code_completion_enabled = 0
+" let g:go_snippet_engine = ""
+
 
