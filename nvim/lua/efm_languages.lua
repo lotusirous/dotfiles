@@ -1,6 +1,6 @@
 local black = {formatCommand = "black --fast -", formatStdin = true}
 
--- local goimports = {formatCommand = "goimports", formatStdin = true}
+local goimports = {formatCommand = "goimports", formatStdin = true}
 
 local golint = {
     lintCommand = "golint",
@@ -13,6 +13,7 @@ local isort = {
     formatCommand = "isort --stdout --profile black -",
     formatStdin = true
 }
+
 local misspell = {
     lintCommand = "misspell",
     lintIgnoreExitCode = true,
@@ -24,8 +25,7 @@ local misspell = {
 local json_jq = {formatCommand = "jq .", formatStdin = true}
 
 local shellcheck = {
-    lintCommand = "shellcheck -f gcc -x -",
-    lintStdin = true,
+    lintCommand = "shellcheck -f gcc -x ",
     lintFormats = {
         "%f=%l:%c: %trror: %m",
         "%f=%l:%c: %tarning: %m",
@@ -56,12 +56,23 @@ local luafmt = {
     formatStdin = true
 }
 
+local eslint = {
+    lintCommand = "eslint_d -f visualstudio --stdin --stdin-filename ${INPUT}",
+    lintIgnoreExitCode = true,
+    lintStdin = true,
+    lintFormats = {
+        "%f(%l,%c): %tarning %m",
+        "%f(%l,%c): %rror %m"
+    },
+    lintSource = "eslint"
+}
+
 return {
     ["="] = {misspell},
-    -- go = {golint, goimports},
+    go = {golint, goimports},
     python = {black, isort},
     json = {json_jq},
-    javascript = {prettier},
+    javascript = {prettier, eslint},
     html = {prettier},
     markdown = {prettier},
     css = {prettier},
