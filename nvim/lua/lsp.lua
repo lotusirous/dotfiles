@@ -1,7 +1,8 @@
-local sumneko_root_path = "/Users/gru-2019015/local/lsp/lua-language-server"
+local sumneko_root_path = "~/local/lsp/lua-language-server"
 local sumneko_binary = sumneko_root_path .. "/bin/lua-language-server"
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.codeLens = {dynamicRegistration = false}
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = {"documentation", "detail", "additionalTextEdits"}
@@ -72,6 +73,16 @@ local on_attach = function(client, bufnr)
         )
     end
 
+    -- codelens show references
+    if client.resolved_capabilities.code_lens then
+        vim.cmd [[
+        augroup lsp_document_codelens
+        au! * <buffer>
+        autocmd BufWritePost,CursorHold <buffer> lua vim.lsp.codelens.refresh()
+        augroup END
+        ]]
+    end
+
     -- enable format if the LSP server support it
     if client.resolved_capabilities.document_formatting then
         vim.cmd [[augroup Format]]
@@ -96,7 +107,7 @@ require "lspconfig".pyright.setup {
 
 require "lspconfig".tsserver.setup {
     capabilities = capabilities,
-    on_attach = function(client, bufnr) -- disable formatter, use efm to format
+    on_attach = function(client, bufnr) -- another tool will take care of this
         client.resolved_capabilities.document_formatting = false
         on_attach(client, bufnr)
     end,
@@ -111,6 +122,8 @@ require "lspconfig".clangd.setup {
         "--background-index",
         "--suggest-missing-includes",
         "--all-scopes-completion",
+        "--clang-tidy",
+        "--header-insertion=iwyu",
         "--completion-style=detailed"
     },
     root_dir = function()
@@ -119,10 +132,20 @@ require "lspconfig".clangd.setup {
 }
 
 require "lspconfig".gopls.setup {
-    on_attach = on_attach,
     capabilities = capabilities,
     cmd = {"gopls", "serve"},
-    settings = {gopls = {analyses = {unusedparams = true}, staticcheck = true}}
+    on_attach = function(client, bufnr) -- another tool will take care of this
+        client.resolved_capabilities.document_formatting = false
+        on_attach(client, bufnr)
+    end,
+    settings = {
+        gopls = {
+            codelenses = {test = true}
+        }
+    },
+    flags = {
+        debounce_text_changes = 200
+    }
 }
 
 -- https://github.com/redhat-developer/yaml-language-server
@@ -138,10 +161,16 @@ require "lspconfig".yamlls.setup {}
 local efm_languages = require "efm_languages"
 require "lspconfig".efm.setup {
     on_attach = on_attach,
-    init_options = {documentFormatting = true},
+    init_options = {
+        documentFormatting = true,
+        hover = true,
+        documentSymbol = true,
+        codeAction = true,
+        completion = true
+    },
     root_dir = vim.loop.cwd,
     filetypes = vim.tbl_keys(efm_languages),
-    settings = {languages = efm_languages}
+    settings = {languages = efm_languages, log_level = 1}
 }
 
 require "lspconfig".sumneko_lua.setup {
@@ -170,4 +199,12 @@ require "lspconfig".sumneko_lua.setup {
     }
 }
 
-require "lspconfig".rust_analyzer.setup {on_attach = on_attach}
+require "lspconfig".rust_analyzer.setup {
+    on_attach = on_attach,
+    capabilities = capabilities
+}
+
+-- https://github.com/rcjsuen/dockerfile-language-server-nodejs
+require "lspconfig".dockerls.setup {
+    on_attach = on_attach
+}
