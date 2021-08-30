@@ -27,7 +27,7 @@ set incsearch
 set nohlsearch
 set smartcase " unless you type in capitalize
 
-set hidden "Manage multiple buffers effectively
+set hidden " Save file when switching buffer
 set termguicolors
 set signcolumn=yes " for git
 
@@ -58,15 +58,14 @@ Plug 'junegunn/fzf.vim'
 
 
 
+Plug 'spf13/vim-autoclose'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-" Plug 'windwp/nvim-autopairs'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-easy-align'
-" Plug 'jiangmiao/auto-pairs'
 
 Plug 'dkarter/bullets.vim'
 " Plug 'vim-utils/vim-man'
@@ -83,8 +82,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'mbbill/undotree'
 Plug 'preservim/nerdtree'
 
-
-" Plug 'fatih/vim-go'
+Plug 'mattn/vim-goaddtags'
 Plug 'rust-lang/rust.vim'
 
 
@@ -93,6 +91,7 @@ Plug 'takac/vim-hardtime'
 
 " Read RFC
 Plug 'mhinz/vim-rfc'
+Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 " Plug 'vimwiki/vimwiki'
 
 
@@ -127,12 +126,18 @@ endfun
 inoremap <C-c> <esc>
 let mapleader = " "
 
-nnoremap <leader>h :wincmd h<CR>
-nnoremap <leader>j :wincmd j<CR>
-nnoremap <leader>k :wincmd k<CR>
-nnoremap <leader>l :wincmd l<CR>
+" Keymap 
 nnoremap <leader>u :UndotreeToggle<CR>
-nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+" nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+" nnoremap <leader>h :wincmd h<CR>
+" nnoremap <leader>j :wincmd j<CR>
+" nnoremap <leader>k :wincmd k<CR>
+" nnoremap <leader>l :wincmd l<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
 
@@ -164,7 +169,19 @@ inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
 
+" EasyAlign the code
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+
+
+" Plugin options
 let g:compe = {}
 let g:compe.enabled = v:true
 let g:compe.autocomplete = v:true
@@ -207,8 +224,6 @@ let NERDTreeShowLineNumbers=1
 let g:UltiSnipsSnippetsDir = "~/.config/nvim/ultisnips"
 let g:UltiSnipsSnippetDirectories = ["ultisnips"]
 
-" Tagbar
-nmap <F8> :TagbarToggle<CR>
 
 
 
@@ -217,17 +232,7 @@ let g:hardtime_default_on = 0
 let g:hardtime_showmsg = 1
 
 
-" EasyAlign the code
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
 
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
-
-
-" vim go 
-" let g:go_code_completion_enabled = 0
-" let g:go_snippet_engine = ""
-
-
+" For python doc string
+let g:pydocstring_doq_path = "~/.pyenv/shims/doq"
+let g:pydocstring_formatter = "numpy"
