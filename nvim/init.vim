@@ -1,5 +1,6 @@
 syntax on
 
+
 set guicursor=
 set cursorline
 
@@ -8,6 +9,7 @@ set visualbell " Flash screen instead of beep sound
 
 set tabstop=4 softtabstop=4
 set shiftwidth=4
+
 set expandtab
 set smartindent
 set nu
@@ -18,7 +20,7 @@ set noswapfile
 set nobackup
 set nowritebackup
 
-set undodir=~/.vim/undodir
+set undodir=~/.config/nvim/undodir
 set undofile
 "
 " search options
@@ -91,7 +93,7 @@ Plug 'takac/vim-hardtime'
 
 " Read RFC
 Plug 'mhinz/vim-rfc'
-Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
+Plug 'heavenshell/vim-pydocstring'
 " Plug 'vimwiki/vimwiki'
 
 
@@ -210,6 +212,7 @@ let g:compe.source.emoji = v:false
 
 
 let g:python_host_prog="~/.pyenv/versions/2.7.18/bin/python"
+let g:python3_host_prog="~/.pyenv/versions/3.8.12/bin/python"
 
 " Since I'm using nerdtree, i dont' need netrw at all.
 "
@@ -234,5 +237,16 @@ let g:hardtime_showmsg = 1
 
 
 " For python doc string
+let g:pydocstring_doq_path = "~/.pyenv/versions/3.8.12/bin/doq"
+let g:pydocstring_formatter = "numpy"
+
 let g:pydocstring_doq_path = "~/.pyenv/shims/doq"
 let g:pydocstring_formatter = "numpy"
+
+
+" Allow to ident comment for assembly 
+
+if !exists('g:easy_align_delimiters')
+  let g:easy_align_delimiters = {}
+endif
+let g:easy_align_delimiters[';'] = { 'pattern': ';', 'ignore_groups': ['String'] }
