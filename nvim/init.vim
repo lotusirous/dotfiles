@@ -240,9 +240,6 @@ let g:hardtime_showmsg = 1
 let g:pydocstring_doq_path = "~/.pyenv/versions/3.8.12/bin/doq"
 let g:pydocstring_formatter = "numpy"
 
-let g:pydocstring_doq_path = "~/.pyenv/shims/doq"
-let g:pydocstring_formatter = "numpy"
-
 
 " Allow to ident comment for assembly 
 
