@@ -34,7 +34,8 @@ set termguicolors
 set signcolumn=yes " for git
 
 
-set completeopt=menuone,noselect
+set completeopt=menu,menuone,noselect
+
 
 
 set colorcolumn=80
@@ -74,9 +75,21 @@ Plug 'dkarter/bullets.vim'
 
 Plug 'preservim/tagbar'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'hrsh7th/nvim-compe'
+
+" Completion
 Plug 'neovim/nvim-lspconfig'
+
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
+
+
+
+Plug 'L3MON4D3/LuaSnip'
 Plug 'SirVer/ultisnips'
+Plug 'rafamadriz/friendly-snippets'
+
 
 
 Plug 'gruvbox-community/gruvbox'
@@ -104,7 +117,7 @@ call plug#end()
 colorscheme gruvbox
 set background=dark
 " transparent bg
-hi Normal guibg=NONE ctermbg=NONE
+hi Normal guibg=NONE ctermbg=NONE 
 
 
 " add LSP config
@@ -128,7 +141,7 @@ endfun
 inoremap <C-c> <esc>
 let mapleader = " "
 
-" Keymap
+" Keymap 
 nnoremap <leader>u :UndotreeToggle<CR>
 " nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 
@@ -164,13 +177,6 @@ nnoremap <leader>Y gg"+yG
 " for nerdtree
 nnoremap <leader>n :NERDTreeToggle<CR>
 
-" Compe completion
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
 
@@ -184,32 +190,6 @@ nmap ga <Plug>(EasyAlign)
 
 
 " Plugin options
-let g:compe = {}
-let g:compe.enabled = v:true
-let g:compe.autocomplete = v:true
-let g:compe.debug = v:false
-let g:compe.min_length = 1
-let g:compe.preselect = 'enable'
-let g:compe.throttle_time = 80
-let g:compe.source_timeout = 200
-let g:compe.resolve_timeout = 800
-let g:compe.incomplete_delay = 400
-let g:compe.max_abbr_width = 100
-let g:compe.max_kind_width = 100
-let g:compe.max_menu_width = 100
-let g:compe.documentation = v:true
-
-let g:compe.source = {}
-let g:compe.source.path = v:true
-let g:compe.source.buffer = v:true
-let g:compe.source.calc = v:true
-let g:compe.source.nvim_lsp = v:true
-let g:compe.source.nvim_lua = v:true
-let g:compe.source.vsnip = v:false
-let g:compe.source.ultisnips = v:true
-let g:compe.source.luasnip = v:false
-let g:compe.source.emoji = v:false
-
 
 let g:python_host_prog="~/.pyenv/versions/2.7.18/bin/python"
 let g:python3_host_prog="~/.pyenv/versions/3.8.12/bin/python"
