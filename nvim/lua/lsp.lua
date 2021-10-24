@@ -1,4 +1,4 @@
-local sumneko_root_path = "/Users/gru-2019015/local/lsp/lua-language-server"
+local sumneko_root_path = "~/local/lsp/lua-language-server"
 local sumneko_binary = sumneko_root_path .. "/bin/lua-language-server"
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

@@ -104,7 +104,7 @@ call plug#end()
 colorscheme gruvbox
 set background=dark
 " transparent bg
-hi Normal guibg=NONE ctermbg=NONE 
+hi Normal guibg=NONE ctermbg=NONE
 
 
 " add LSP config
@@ -128,7 +128,7 @@ endfun
 inoremap <C-c> <esc>
 let mapleader = " "
 
-" Keymap 
+" Keymap
 nnoremap <leader>u :UndotreeToggle<CR>
 " nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 
