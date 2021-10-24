@@ -1,5 +1,6 @@
 syntax on
 
+
 set guicursor=
 set cursorline
 
@@ -8,6 +9,7 @@ set visualbell " Flash screen instead of beep sound
 
 set tabstop=4 softtabstop=4
 set shiftwidth=4
+
 set expandtab
 set smartindent
 set nu
@@ -18,7 +20,7 @@ set noswapfile
 set nobackup
 set nowritebackup
 
-set undodir=~/.vim/undodir
+set undodir=~/.config/nvim/undodir
 set undofile
 "
 " search options
@@ -27,7 +29,7 @@ set incsearch
 set nohlsearch
 set smartcase " unless you type in capitalize
 
-set hidden "Manage multiple buffers effectively
+set hidden " Save file when switching buffer
 set termguicolors
 set signcolumn=yes " for git
 
@@ -58,24 +60,23 @@ Plug 'junegunn/fzf.vim'
 
 
 
+" Plug 'spf13/vim-autoclose'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-" Plug 'windwp/nvim-autopairs'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-easy-align'
 
 Plug 'dkarter/bullets.vim'
-Plug 'vim-utils/vim-man'
+" Plug 'vim-utils/vim-man'
 
 Plug 'preservim/tagbar'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
 Plug 'SirVer/ultisnips'
-Plug 'norcalli/snippets.nvim'
 
 
 Plug 'gruvbox-community/gruvbox'
@@ -83,8 +84,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'mbbill/undotree'
 Plug 'preservim/nerdtree'
 
-
-Plug 'fatih/vim-go'
+Plug 'mattn/vim-goaddtags'
 Plug 'rust-lang/rust.vim'
 
 
@@ -93,6 +93,7 @@ Plug 'takac/vim-hardtime'
 
 " Read RFC
 Plug 'mhinz/vim-rfc'
+Plug 'heavenshell/vim-pydocstring'
 " Plug 'vimwiki/vimwiki'
 
 
@@ -115,6 +116,7 @@ if executable('rg')
     let g:rg_derive_root='true'
 endif
 
+" use this function by :call EmptyRegisters()
 fun! EmptyRegisters()
     let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"', '\zs')
     for r in regs
@@ -126,12 +128,18 @@ endfun
 inoremap <C-c> <esc>
 let mapleader = " "
 
-nnoremap <leader>h :wincmd h<CR>
-nnoremap <leader>j :wincmd j<CR>
-nnoremap <leader>k :wincmd k<CR>
-nnoremap <leader>l :wincmd l<CR>
+" Keymap 
 nnoremap <leader>u :UndotreeToggle<CR>
-nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+" nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+" nnoremap <leader>h :wincmd h<CR>
+" nnoremap <leader>j :wincmd j<CR>
+" nnoremap <leader>k :wincmd k<CR>
+" nnoremap <leader>l :wincmd l<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
 
@@ -163,7 +171,19 @@ inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
 
+" EasyAlign the code
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+
+
+" Plugin options
 let g:compe = {}
 let g:compe.enabled = v:true
 let g:compe.autocomplete = v:true
@@ -191,6 +211,9 @@ let g:compe.source.luasnip = v:false
 let g:compe.source.emoji = v:false
 
 
+let g:python_host_prog="~/.pyenv/versions/2.7.18/bin/python"
+let g:python3_host_prog="~/.pyenv/versions/3.8.12/bin/python"
+
 " Since I'm using nerdtree, i dont' need netrw at all.
 "
 let g:loaded_netrw       = 1
@@ -204,20 +227,27 @@ let NERDTreeShowLineNumbers=1
 let g:UltiSnipsSnippetsDir = "~/.config/nvim/ultisnips"
 let g:UltiSnipsSnippetDirectories = ["ultisnips"]
 
-" Tagbar
-nmap <F8> :TagbarToggle<CR>
 
 
 
 " Enable hard time mode
-let g:hardtime_default_on = 1
+let g:hardtime_default_on = 0
 let g:hardtime_showmsg = 1
 
 
-" EasyAlign the code
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
 
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+" For python doc string
+let g:pydocstring_doq_path = "~/.pyenv/versions/3.8.12/bin/doq"
+let g:pydocstring_formatter = "numpy"
 
+if !exists('g:easy_align_delimiters')
+  let g:easy_align_delimiters = {}
+endif
+let g:easy_align_delimiters[';'] = { 'pattern': ';', 'ignore_groups': ['String'] }
+
+
+
+" my c remap
+noremap <F9> : !gcc % && print "====RESULT====\n" && ./a.out && rm a.out <CR>
+
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>

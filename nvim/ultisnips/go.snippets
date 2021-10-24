@@ -1,3 +1,5 @@
+
+
 snippet handf "http.HandlerFunc"
 func ${1:handler}(${2:store}) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -10,5 +12,13 @@ endsnippet
 snippet iferr "if err != nil"
 if err != nil {
 	$1
+}
+endsnippet
+
+
+
+snippet tf "if err != nil"
+func Test${1:Function}(t *testing.T) {
+   ${0:${VISUAL}}
 }
 endsnippet
