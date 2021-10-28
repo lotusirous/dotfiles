@@ -34,9 +34,6 @@ set termguicolors
 set signcolumn=yes " for git
 
 
-set completeopt=menu,menuone,noselect
-
-
 
 set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
@@ -60,7 +57,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 
-
 " Plug 'spf13/vim-autoclose'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
@@ -82,12 +78,14 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-nvim-lua'
+" Plug 'hrsh7th/cmp-calc'
+Plug 'octaltree/cmp-look'
 
-
-
+" Snippet
 Plug 'L3MON4D3/LuaSnip'
-Plug 'SirVer/ultisnips'
+Plug 'saadparwaiz1/cmp_luasnip' 
 Plug 'rafamadriz/friendly-snippets'
 
 
@@ -113,6 +111,7 @@ Plug 'heavenshell/vim-pydocstring'
 
 call plug#end()
 
+set completeopt=menuone,noselect
 
 colorscheme gruvbox
 set background=dark
@@ -122,12 +121,28 @@ hi Normal guibg=NONE ctermbg=NONE
 
 " add LSP config
 lua require('lsp')
+lua require('snippets')
 lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
+
+
 
 
 if executable('rg')
     let g:rg_derive_root='true'
 endif
+
+
+" LuaSnip
+imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
+inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
+
+snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
+snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+
+
 
 " use this function by :call EmptyRegisters()
 fun! EmptyRegisters()
@@ -145,10 +160,10 @@ let mapleader = " "
 nnoremap <leader>u :UndotreeToggle<CR>
 " nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" nnoremap <C-J> <C-W><C-J>
+" nnoremap <C-K> <C-W><C-K>
+" nnoremap <C-L> <C-W><C-L>
+" nnoremap <C-H> <C-W><C-H>
 " nnoremap <leader>h :wincmd h<CR>
 " nnoremap <leader>j :wincmd j<CR>
 " nnoremap <leader>k :wincmd k<CR>
@@ -188,11 +203,8 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
-" Plugin options
-
-let g:python_host_prog="~/.pyenv/versions/2.7.18/bin/python"
-let g:python3_host_prog="~/.pyenv/versions/3.8.12/bin/python"
 
 " Since I'm using nerdtree, i dont' need netrw at all.
 "
@@ -204,17 +216,15 @@ let NERDTreeMinimalUI=1
 let NERDTreeShowLineNumbers=1
 
 
-let g:UltiSnipsSnippetsDir = "~/.config/nvim/ultisnips"
-let g:UltiSnipsSnippetDirectories = ["ultisnips"]
-
-
-
 
 " Enable hard time mode
 let g:hardtime_default_on = 0
 let g:hardtime_showmsg = 1
 
 
+" Required environment for many plugins
+let g:python_host_prog="~/.pyenv/versions/2.7.18/bin/python"
+let g:python3_host_prog="~/.pyenv/versions/3.8.12/bin/python"
 
 " For python doc string
 let g:pydocstring_doq_path = "~/.pyenv/versions/3.8.12/bin/doq"
@@ -230,4 +240,3 @@ let g:easy_align_delimiters[';'] = { 'pattern': ';', 'ignore_groups': ['String']
 " my c remap
 noremap <F9> : !gcc % && print "====RESULT====\n" && ./a.out && rm a.out <CR>
 
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>

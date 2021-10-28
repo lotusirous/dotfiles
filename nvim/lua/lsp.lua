@@ -5,39 +5,41 @@ local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protoco
 
 -- Setup nvim-cmp.
 local cmp = require "cmp"
+local luasnip = require("luasnip")
 
 cmp.setup(
     {
+        sources = {
+            {name = "luasnip"},
+            {name = "path"},
+            {name = "buffer", keyword_length = 5},
+            {name = "nvim_lsp"},
+            {name = "nvim_lua"}
+            -- {name = "look"}
+        },
         snippet = {
             expand = function(args)
-                -- For `vsnip` user.
-                -- vim.fn["vsnip#anonymous"](args.body)
-
-                -- For `luasnip` user.
-                require("luasnip").lsp_expand(args.body)
-
-                -- For `ultisnips` user.
-                -- vim.fn["UltiSnips#Anon"](args.body)
+                luasnip.lsp_expand(args.body)
             end
         },
         mapping = {
+            ["<C-n>"] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}),
+            ["<C-p>"] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}),
+            ["<Down>"] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Select}),
+            ["<Up>"] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}),
             ["<C-d>"] = cmp.mapping.scroll_docs(-4),
             ["<C-f>"] = cmp.mapping.scroll_docs(4),
             ["<C-Space>"] = cmp.mapping.complete(),
             ["<C-e>"] = cmp.mapping.close(),
-            ["<CR>"] = cmp.mapping.confirm({select = true})
+            ["<CR>"] = cmp.mapping.confirm(
+                {
+                    behavior = cmp.ConfirmBehavior.Replace,
+                    select = true
+                }
+            )
         },
-        sources = {
-            {name = "nvim_lsp"},
-            -- For vsnip user.
-            -- { name = 'vsnip' },
-
-            -- For luasnip user.
-            {name = "luasnip"},
-            -- For ultisnips user.
-            -- { name = 'ultisnips' },
-
-            {name = "buffer"}
+        experimental = {
+            native_menu = false -- I like the new menu better
         }
     }
 )
@@ -61,14 +63,6 @@ local on_attach = function(client, bufnr)
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
-    -- Remove the following block because of compe in clangd does not work with
-    -- omnifunc
-    -- local function buf_set_option(...)
-    --     vim.api.nvim_buf_set_option(bufnr, ...)
-    -- end
-
-    -- Enable completion triggered by <c-x><c-o>
-    -- buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
     -- Mappings.
     local opts = {noremap = true, silent = true}
@@ -97,12 +91,12 @@ local on_attach = function(client, bufnr)
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_exec(
             [[
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]],
+            augroup lsp_document_highlight
+            autocmd! * <buffer>
+            autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+            autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+            augroup END
+        ]],
             false
         )
     end
@@ -209,6 +203,7 @@ require "lspconfig".efm.setup {
 
 require "lspconfig".sumneko_lua.setup {
     on_attach = on_attach,
+    capabilities = capabilities,
     cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
     settings = {
         Lua = {
