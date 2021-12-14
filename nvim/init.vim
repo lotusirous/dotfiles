@@ -62,6 +62,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-projectionist'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-easy-align'
@@ -75,23 +76,23 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Completion
 Plug 'neovim/nvim-lspconfig'
 
-Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-nvim-lua'
-" Plug 'hrsh7th/cmp-calc'
-Plug 'octaltree/cmp-look'
+
 
 " Snippet
 Plug 'L3MON4D3/LuaSnip'
-Plug 'saadparwaiz1/cmp_luasnip' 
+Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'rafamadriz/friendly-snippets'
 
 
-
+" let's gruvbox all the things
 Plug 'gruvbox-community/gruvbox'
 Plug 'itchyny/lightline.vim'
+Plug 'shinchu/lightline-gruvbox.vim'
+
 Plug 'mbbill/undotree'
 Plug 'preservim/nerdtree'
 
@@ -116,11 +117,16 @@ set completeopt=menuone,noselect
 colorscheme gruvbox
 set background=dark
 " transparent bg
-hi Normal guibg=NONE ctermbg=NONE 
+hi Normal guibg=NONE ctermbg=NONE
+
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox'
+
 
 
 " add LSP config
 lua require('lsp')
+lua require('compe')
 lua require('snippets')
 lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 
@@ -133,7 +139,7 @@ endif
 
 
 " LuaSnip
-imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
+imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'
 inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
 
 snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
@@ -142,6 +148,14 @@ snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
 imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
 smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
 
+" LSP
+nnoremap <silent><leader>ca :Lspsaga code_action<CR>
+
+" Removes trailing spaces
+function TrimWhiteSpace()
+  %s/\s*$//
+  ''
+endfunction
 
 
 " use this function by :call EmptyRegisters()
@@ -156,7 +170,7 @@ endfun
 inoremap <C-c> <esc>
 let mapleader = " "
 
-" Keymap 
+
 nnoremap <leader>u :UndotreeToggle<CR>
 " nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 
@@ -214,6 +228,7 @@ let g:loaded_netrwPlugin = 1
 " NERDTREE option
 let NERDTreeMinimalUI=1
 let NERDTreeShowLineNumbers=1
+let NERDTreeShowHidden=1
 
 
 
@@ -236,7 +251,12 @@ endif
 let g:easy_align_delimiters[';'] = { 'pattern': ';', 'ignore_groups': ['String'] }
 
 
+" support njk
+au BufRead,BufNewFile *.njk setfiletype html
+
+" Use vim vim-projectionist https://github.com/tpope/vim-projectionist
+nnoremap <leader>a :A<CR>
 
 " my c remap
-noremap <F9> : !gcc % && print "====RESULT====\n" && ./a.out && rm a.out <CR>
+noremap <F9> : !clang % && print "====RESULT====\n" && ./a.out && rm a.out <CR>
 
