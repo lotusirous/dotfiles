@@ -126,7 +126,6 @@ let g:lightline.colorscheme = 'gruvbox'
 
 " add LSP config
 lua require('lsp')
-lua require('compe')
 lua require('snippets')
 lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 
