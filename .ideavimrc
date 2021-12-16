@@ -11,8 +11,8 @@ set surround
 set textobj-entire
 set ReplaceWithRegister
 
-inoremap jk <Esc>
-vnoremap jk <Esc>
+"inoremap jk <Esc>
+"vnoremap jk <Esc>
 
 noremap  <c-f> <c-d>
 noremap  <c-b> <c-u>
