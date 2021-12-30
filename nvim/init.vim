@@ -1,7 +1,5 @@
 syntax on
 
-
-set guicursor=
 set cursorline
 
 set noerrorbells
@@ -53,12 +51,22 @@ set shortmess+=c
 
 call plug#begin('~/.config/nvim/plugged')
 
+Plug 'gruvbox-community/gruvbox'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'mbbill/undotree'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'windwp/nvim-autopairs'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/popup.nvim'
+
+" Navigation
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+Plug 'preservim/tagbar'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-" Plug 'spf13/vim-autoclose'
-Plug 'tpope/vim-commentary'
+Plug 'numToStr/Comment.nvim'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -66,49 +74,44 @@ Plug 'tpope/vim-projectionist'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'mattn/vim-sonictemplate'
 
+
+" Markdown
 Plug 'dkarter/bullets.vim'
-" Plug 'vim-utils/vim-man'
 
-Plug 'preservim/tagbar'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-" Completion
+" cmp plugins
 Plug 'neovim/nvim-lspconfig'
-
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
-
+Plug 'saadparwaiz1/cmp_luasnip'
 
 " Snippet
 Plug 'L3MON4D3/LuaSnip'
-Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'rafamadriz/friendly-snippets'
 
 
-" let's gruvbox all the things
-Plug 'gruvbox-community/gruvbox'
-Plug 'itchyny/lightline.vim'
-Plug 'shinchu/lightline-gruvbox.vim'
-
-Plug 'mbbill/undotree'
-Plug 'preservim/nerdtree'
-
+" Go development
+Plug 'buoto/gotests-vim'
+Plug 'rhysd/vim-go-impl'
 Plug 'mattn/vim-goaddtags'
+" Rust
 Plug 'rust-lang/rust.vim'
 
+
+" Python development
+Plug 'heavenshell/vim-pydocstring'
 
 " Breaking bad habit
 Plug 'takac/vim-hardtime'
 
 " Read RFC
-Plug 'mhinz/vim-rfc'
-Plug 'heavenshell/vim-pydocstring'
+" Plug 'mhinz/vim-rfc'
 " Plug 'vimwiki/vimwiki'
-
-
+" Plug 'vim-utils/vim-man'
 
 call plug#end()
 
@@ -119,15 +122,16 @@ set background=dark
 " transparent bg
 hi Normal guibg=NONE ctermbg=NONE
 
-let g:lightline = {}
-let g:lightline.colorscheme = 'gruvbox'
 
+" Lua modules
+lua require('tk.lualine')
+lua require('tk.cmp')
+lua require('tk.lsp')
+lua require('tk.nvim-tree')
+lua require('tk.treesitter')
+lua require('tk.autopairs')
+lua require('tk.comment')
 
-
-" add LSP config
-lua require('lsp')
-lua require('snippets')
-lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 
 
 
@@ -135,6 +139,11 @@ lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incr
 if executable('rg')
     let g:rg_derive_root='true'
 endif
+
+
+" Since I'm using another tree, i dont' need netrw at all.
+let g:loaded_netrw       = 1
+let g:loaded_netrwPlugin = 1
 
 
 " LuaSnip
@@ -146,15 +155,6 @@ snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
 
 imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
 smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
-
-" LSP
-nnoremap <silent><leader>ca :Lspsaga code_action<CR>
-
-" Removes trailing spaces
-function TrimWhiteSpace()
-  %s/\s*$//
-  ''
-endfunction
 
 
 " use this function by :call EmptyRegisters()
@@ -169,31 +169,21 @@ endfun
 inoremap <C-c> <esc>
 let mapleader = " "
 
-
+" Keymap
 nnoremap <leader>u :UndotreeToggle<CR>
-" nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
-
-" nnoremap <C-J> <C-W><C-J>
-" nnoremap <C-K> <C-W><C-K>
-" nnoremap <C-L> <C-W><C-L>
-" nnoremap <C-H> <C-W><C-H>
-" nnoremap <leader>h :wincmd h<CR>
-" nnoremap <leader>j :wincmd j<CR>
-" nnoremap <leader>k :wincmd k<CR>
-" nnoremap <leader>l :wincmd l<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
+
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>` :Marks<CR>
 nnoremap <leader>t :Tags<CR>
 nnoremap <C-p> :Files<CR>
-
-" code search
 nnoremap <leader>ps :Rg<CR>
-
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
 
 " Copy to system clipboard
 nnoremap <leader>y "+y
@@ -202,11 +192,13 @@ nnoremap <leader>Y gg"+yG
 
 
 
-" for nerdtree
-nnoremap <leader>n :NERDTreeToggle<CR>
+" For testing
+nmap <silent> <leader>n :NvimTreeToggle<CR>
 
-" Tagbar
-nmap <F8> :TagbarToggle<CR>
+" Template
+let g:sonictemplate_vim_template_dir = expand('~/.config/nvim/templates')
+
+
 
 " EasyAlign the code
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -215,21 +207,13 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-
-" Since I'm using nerdtree, i dont' need netrw at all.
-"
-let g:loaded_netrw       = 1
-let g:loaded_netrwPlugin = 1
-
-" NERDTREE option
-let NERDTreeMinimalUI=1
-let NERDTreeShowLineNumbers=1
-let NERDTreeShowHidden=1
+if !exists('g:easy_align_delimiters')
+  let g:easy_align_delimiters = {}
+endif
+let g:easy_align_delimiters[';'] = { 'pattern': ';', 'ignore_groups': ['String'] }
 
 
+"vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " Enable hard time mode
 let g:hardtime_default_on = 0
@@ -244,10 +228,6 @@ let g:python3_host_prog="~/.pyenv/versions/3.8.12/bin/python"
 let g:pydocstring_doq_path = "~/.pyenv/versions/3.8.12/bin/doq"
 let g:pydocstring_formatter = "numpy"
 
-if !exists('g:easy_align_delimiters')
-  let g:easy_align_delimiters = {}
-endif
-let g:easy_align_delimiters[';'] = { 'pattern': ';', 'ignore_groups': ['String'] }
 
 
 " support njk
@@ -258,4 +238,3 @@ nnoremap <leader>a :A<CR>
 
 " my c remap
 noremap <F9> : !clang % && print "====RESULT====\n" && ./a.out && rm a.out <CR>
-

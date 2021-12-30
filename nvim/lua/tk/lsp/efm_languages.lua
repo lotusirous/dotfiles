@@ -9,6 +9,13 @@ local golint = {
     lintSource = "golint"
 }
 
+local golangci_lint = {
+    lintCommand = "golangci-lint run --fast",
+    lintIgnoreExitCode = true,
+    lintFormats = {"%f:%l:%c: %m"},
+    lintSource = "golangci-lint"
+}
+
 local isort = {
     formatCommand = "isort --stdout --profile black -",
     formatStdin = true
@@ -86,7 +93,7 @@ local write_good = {
 
 return {
     ["="] = {misspell},
-    go = {golint, goimports},
+    go = {golint, golangci_lint, goimports},
     python = {black, isort},
     json = {json_jq},
     javascript = {prettier, eslint},
