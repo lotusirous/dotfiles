@@ -54,10 +54,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'gruvbox-community/gruvbox'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'mbbill/undotree'
-Plug 'kyazdani42/nvim-tree.lua'
-Plug 'windwp/nvim-autopairs'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-lua/popup.nvim'
+Plug 'windwp/nvim-autopairs''
 
 " Navigation
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -72,13 +69,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'mattn/emmet-vim'
 Plug 'mattn/vim-sonictemplate'
 
-
-" Markdown
-Plug 'dkarter/bullets.vim'
 
 
 " cmp plugins
@@ -93,14 +87,17 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
 
+" Markdown
+Plug 'dkarter/bullets.vim'
+
 
 " Go development
 Plug 'buoto/gotests-vim'
 Plug 'rhysd/vim-go-impl'
 Plug 'mattn/vim-goaddtags'
+
 " Rust
 Plug 'rust-lang/rust.vim'
-
 
 " Python development
 Plug 'heavenshell/vim-pydocstring'
@@ -108,10 +105,6 @@ Plug 'heavenshell/vim-pydocstring'
 " Breaking bad habit
 Plug 'takac/vim-hardtime'
 
-" Read RFC
-" Plug 'mhinz/vim-rfc'
-" Plug 'vimwiki/vimwiki'
-" Plug 'vim-utils/vim-man'
 
 call plug#end()
 
@@ -127,7 +120,6 @@ hi Normal guibg=NONE ctermbg=NONE
 lua require('tk.lualine')
 lua require('tk.cmp')
 lua require('tk.lsp')
-lua require('tk.nvim-tree')
 lua require('tk.treesitter')
 lua require('tk.autopairs')
 lua require('tk.comment')
@@ -141,9 +133,15 @@ if executable('rg')
 endif
 
 
-" Since I'm using another tree, i dont' need netrw at all.
-let g:loaded_netrw       = 1
-let g:loaded_netrwPlugin = 1
+" netrw with the vinegar wings.
+let g:netrw_banner = 0
+let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 0
+let g:netrw_alto = 1
+let g:netrw_altv = 1
+let g:netrw_winsize = 30
+
 
 
 " LuaSnip
@@ -190,10 +188,10 @@ nnoremap <leader>y "+y
 vnoremap <leader>y "+y
 nnoremap <leader>Y gg"+yG
 
+" Tree
+nmap <silent> <leader>n :Lexplore<CR>
 
 
-" For testing
-nmap <silent> <leader>n :NvimTreeToggle<CR>
 
 " Template
 let g:sonictemplate_vim_template_dir = expand('~/.config/nvim/templates')
