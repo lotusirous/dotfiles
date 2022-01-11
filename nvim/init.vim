@@ -52,9 +52,14 @@ set shortmess+=c
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'gruvbox-community/gruvbox'
-Plug 'nvim-lualine/lualine.nvim'
+"Plug 'nvim-lualine/lualine.nvim'
+Plug 'itchyny/lightline.vim'
+Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'mbbill/undotree'
-Plug 'windwp/nvim-autopairs''
+Plug 'windwp/nvim-autopairs'
+Plug 'preservim/nerdtree'
+"Plug 'tpope/vim-vinegar'
+
 
 " Navigation
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -69,10 +74,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'junegunn/vim-easy-align'
 Plug 'mattn/emmet-vim'
+Plug 'junegunn/vim-easy-align'
 Plug 'mattn/vim-sonictemplate'
 
+
+" Markdown
+Plug 'dkarter/bullets.vim'
 
 
 " cmp plugins
@@ -85,19 +93,17 @@ Plug 'saadparwaiz1/cmp_luasnip'
 
 " Snippet
 Plug 'L3MON4D3/LuaSnip'
-Plug 'rafamadriz/friendly-snippets'
-
-" Markdown
-Plug 'dkarter/bullets.vim'
+"Plug 'rafamadriz/friendly-snippets'
+Plug 'lotusirous/friendly-snippets'
 
 
 " Go development
 Plug 'buoto/gotests-vim'
 Plug 'rhysd/vim-go-impl'
 Plug 'mattn/vim-goaddtags'
-
 " Rust
 Plug 'rust-lang/rust.vim'
+
 
 " Python development
 Plug 'heavenshell/vim-pydocstring'
@@ -116,8 +122,14 @@ set background=dark
 hi Normal guibg=NONE ctermbg=NONE
 
 
+
+" Status line
+set laststatus=2
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox'
+
 " Lua modules
-lua require('tk.lualine')
+"lua require('tk.lualine')
 lua require('tk.cmp')
 lua require('tk.lsp')
 lua require('tk.treesitter')
@@ -132,15 +144,16 @@ if executable('rg')
     let g:rg_derive_root='true'
 endif
 
+" NerdTree options
+let g:loaded_netrw       = 1
+let g:loaded_netrwPlugin = 1
 
-" netrw with the vinegar wings.
-let g:netrw_banner = 0
-let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 0
-let g:netrw_alto = 1
-let g:netrw_altv = 1
-let g:netrw_winsize = 30
+let NERDTreeMinimalUI=1
+let NERDTreeShowLineNumbers=1
+let NERDTreeShowHidden=1
+
+nmap <silent> <leader>n :NERDTreeToggle<CR>
+
 
 
 
@@ -180,6 +193,7 @@ nnoremap <leader>` :Marks<CR>
 nnoremap <leader>t :Tags<CR>
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>ps :Rg<CR>
+
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
 
@@ -187,9 +201,6 @@ nmap <F8> :TagbarToggle<CR>
 nnoremap <leader>y "+y
 vnoremap <leader>y "+y
 nnoremap <leader>Y gg"+yG
-
-" Tree
-nmap <silent> <leader>n :Lexplore<CR>
 
 
 
