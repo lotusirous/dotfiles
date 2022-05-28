@@ -27,7 +27,7 @@ local diff = {
 local mode = {
     "mode",
     fmt = function(str)
-        return "-- " .. str .. " --"
+        return " " .. str .. " "
     end
 }
 
@@ -61,6 +61,19 @@ local spaces = function()
     return "spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
 end
 
+
+local function search_result()
+  if vim.v.hlsearch == 0 then
+    return ''
+  end
+  local last_search = vim.fn.getreg('/')
+  if not last_search or last_search == '' then
+    return ''
+  end
+  local searchcount = vim.fn.searchcount({ maxcount = 9999 })
+  return last_search .. '(' .. searchcount.current .. '/' .. searchcount.total .. ')'
+end
+
 lualine.setup(
     {
         options = {
@@ -72,8 +85,8 @@ lualine.setup(
             always_divide_middle = true
         },
         sections = {
-            lualine_a = {branch, diagnostics},
-            lualine_b = {mode},
+            lualine_a = {mode},
+            lualine_b = {branch, diagnostics,  { 'filename', file_status = false, path = 1 } },
             lualine_c = {},
             -- lualine_x = { "encoding", "fileformat", "filetype" },
 
@@ -86,7 +99,7 @@ lualine.setup(
             lualine_b = {},
             lualine_c = {"filename"},
             lualine_x = {"location"},
-            lualine_y = {},
+            lualine_y = { search_result, 'filetype' },
             lualine_z = {}
         },
         tabline = {},

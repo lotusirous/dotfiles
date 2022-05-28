@@ -1,10 +1,9 @@
 local status_ok, lspconfig = pcall(require, "lspconfig")
-if not status_ok then
-    return
-end
+if not status_ok then return end
 
 local on_attach = require("tk.lsp.handlers").on_attach
 local capabilities = require("tk.lsp.handlers").capabilities
+
 local efm_languages = require("tk.lsp.efm_languages")
 
 local sumneko_root_path = "/Users/gru-2019015/local/lsp/lua-language-server"
@@ -29,18 +28,12 @@ lspconfig.clangd.setup {
     on_attach = on_attach,
     capabilities = capabilities,
     cmd = {
-        "clangd",
-        "--background-index",
-        "--suggest-missing-includes",
-        "--fallback-style=gnu",
-        "--all-scopes-completion",
-        "--clang-tidy",
-        "--header-insertion=iwyu",
+        "clangd", "--offset-encoding=utf-16", "--background-index",
+        "--suggest-missing-includes", "--fallback-style=gnu",
+        "--all-scopes-completion", "--clang-tidy", "--header-insertion=iwyu",
         "--completion-style=detailed"
     },
-    root_dir = function()
-        return vim.loop.cwd()
-    end
+    root_dir = function() return vim.loop.cwd() end
 }
 
 lspconfig.gopls.setup {
@@ -71,7 +64,6 @@ lspconfig.gopls.setup {
 -- lspconfig.cssls.setup {on_attach = on_attach}
 
 -- efm config
-
 lspconfig.efm.setup {
     on_attach = on_attach,
     init_options = {
@@ -118,10 +110,8 @@ lspconfig.rust_analyzer.setup {
     capabilities = capabilities
 }
 
-lspconfig.hls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities
-}
+lspconfig.hls.setup {on_attach = on_attach, capabilities = capabilities}
 -- https://github.com/rcjsuen/dockerfile-language-server-nodejs
 
 lspconfig.dockerls.setup {on_attach = on_attach}
+lspconfig.sourcekit.setup {on_attach = on_attach}

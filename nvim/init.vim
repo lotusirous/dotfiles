@@ -1,6 +1,8 @@
 syntax on
 
 set cursorline
+"set guicursor=
+
 
 set noerrorbells
 set visualbell " Flash screen instead of beep sound
@@ -31,6 +33,11 @@ set hidden " Save file when switching buffer
 set termguicolors
 set signcolumn=yes " for git
 
+"set spell
+
+
+" unfold by default
+set foldlevelstart=99
 
 
 set colorcolumn=80
@@ -73,6 +80,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
+" Plug 'tpope/vim-sleuth' " better indent
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-easy-align'
@@ -83,7 +91,6 @@ Plug 'mattn/vim-sonictemplate'
 Plug 'dkarter/bullets.vim'
 
 
-" cmp plugins
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/nvim-cmp'
@@ -93,14 +100,15 @@ Plug 'saadparwaiz1/cmp_luasnip'
 
 " Snippet
 Plug 'L3MON4D3/LuaSnip'
-"Plug 'rafamadriz/friendly-snippets'
-Plug 'lotusirous/friendly-snippets'
+Plug 'rafamadriz/friendly-snippets'
 
 
 " Go development
 Plug 'buoto/gotests-vim'
 Plug 'rhysd/vim-go-impl'
 Plug 'mattn/vim-goaddtags'
+Plug 'ericpubu/lsp_codelens_extensions.nvim'
+
 " Rust
 Plug 'rust-lang/rust.vim'
 
@@ -114,7 +122,8 @@ Plug 'takac/vim-hardtime'
 
 call plug#end()
 
-set completeopt=menuone,noselect
+" https://www.youtube.com/watch?v=-3S4xVDpLzI
+set completeopt=menuone,noinsert,noselect
 
 colorscheme gruvbox
 set background=dark
@@ -122,6 +131,10 @@ set background=dark
 hi Normal guibg=NONE ctermbg=NONE
 
 
+autocmd FileType markdown set list
+autocmd FileType markdown set lcs=tab:→\
+" hi NonText ctermfg=59   guifg=#282828
+" hi SpecialKey ctermfg=59   guifg=#282828
 
 " Status line
 set laststatus=2
@@ -135,6 +148,8 @@ lua require('tk.lsp')
 lua require('tk.treesitter')
 lua require('tk.autopairs')
 lua require('tk.comment')
+lua require('tk.cl_extention')
+lua require('tk.luasnip')
 
 
 
@@ -152,7 +167,8 @@ let NERDTreeMinimalUI=1
 let NERDTreeShowLineNumbers=1
 let NERDTreeShowHidden=1
 
-nmap <silent> <leader>n :NERDTreeToggle<CR>
+
+
 
 
 
@@ -190,7 +206,6 @@ vnoremap K :m '<-2<CR>gv=gv
 
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>` :Marks<CR>
-nnoremap <leader>t :Tags<CR>
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>ps :Rg<CR>
 
@@ -203,9 +218,13 @@ vnoremap <leader>y "+y
 nnoremap <leader>Y gg"+yG
 
 
+nnoremap <leader>n :NERDTreeToggle<CR>
+nnoremap <leader>r :NERDTreeFind<CR>
 
 " Template
 let g:sonictemplate_vim_template_dir = expand('~/.config/nvim/templates')
+
+
 
 
 
