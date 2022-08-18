@@ -96,6 +96,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'saadparwaiz1/cmp_luasnip'
 
 " Snippet
@@ -263,6 +264,7 @@ au BufRead,BufNewFile *.njk setfiletype html
 
 " Use vim vim-projectionist https://github.com/tpope/vim-projectionist
 nnoremap <leader>a :A<CR>
+nnoremap <F12> :PlugUpdate<CR>
 
 " my c remap
 noremap <F9> : !clang % && print "====RESULT====\n" && ./a.out && rm a.out <CR>

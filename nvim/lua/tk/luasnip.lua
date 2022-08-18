@@ -26,6 +26,15 @@ local ts_utils = require "nvim-treesitter.ts_utils"
 local get_node_text = vim.treesitter.get_node_text
 
 
+
+-- require("luasnip.loaders.from_vscode").load({ include = { "all" } }) -- Load all snippets
+require("luasnip.loaders.from_vscode").lazy_load()
+-- require("luasnip.loaders.from_vscode").lazy_load({
+--     paths = snippets_paths(),
+--     include = nil, -- Load all languages
+--     exclude = {},
+-- })
+
 -- keymap
 vim.keymap.set({ "i", "s" }, "<c-k>", function()
     if ls.expand_or_jumpable() then
@@ -98,12 +107,10 @@ local transform = function(text, info)
     elseif text == "error" then
         if info then
             info.index = info.index + 1
-
-            -- return c(info.index, {
-            --     t(info.err_name),
-            --     t(string.format('fmt.Errorf(%s, "%s")', info.err_name, info.func_name)),
-            -- })
-            return t(info.err_name)
+            return c(info.index, {
+                t(info.err_name),
+                t(string.format('fmt.Errorf("%s", %s)', info.func_name, info.err_name)),
+            })
         else
             return t "err"
         end
@@ -161,16 +168,6 @@ local function go_result_type(info)
 end
 
 local go_ret_vals = function(args)
-    if args[2] == nil then -- inline error handling
-        return snippet_from_nodes(
-            nil,
-            go_result_type {
-                index = 0,
-                err_name = "err",
-                func_name = "",
-            }
-        )
-    end
     return snippet_from_nodes(
         nil,
         go_result_type {
@@ -182,20 +179,20 @@ local go_ret_vals = function(args)
 end
 
 
-local copyname = function(args) return args[1] end
 
 ls.add_snippets("go", {
     -- Very long example for a go snippets
-    s("ef", {
-        i(1, { "val" }),
-        t ", err := ",
-        i(2, { "f" }),
-        t "(",
-        i(3),
-        t ")",
-        i(0),
-    }),
+    -- s("ef", {
+    --     i(1, { "val" }),
+    --     t ", err := ",
+    --     i(2, { "f" }),
+    --     t "(",
+    --     i(3),
+    --     t ")",
+    --     i(0),
+    -- }),
 
+    -- TODO(khant): handle function does not have return values.
     s("iferr", {
         i(1, { "val" }),
         t ", ",
@@ -210,31 +207,30 @@ ls.add_snippets("go", {
         i(0),
     }),
 
-    s("ile", {
-        t "if err := ",
-        i(1, { "f" }),
-        t "; ",
-        t { "err != nil {", "\treturn " },
-        d(2, go_ret_vals, { 1, nil }),
-        t { "", "}" },
-        i(0),
-    }),
 
     s("pf", {
         -- Simple static text.
         t("// "),
-        -- function, first parameter is the function, second the Placeholders
-        -- whose text it gets as input.
-        f(copyname, 1), t " ", -- space after descriptinon
+        same(1), t " ", -- space after descriptinon
         i(4, { "..." }), -- paste function name
         t({ "", "func " }), -- Placeholder/Insert.
         i(1), t("("), -- Placeholder with initial text.
         i(2, ""), t(")"), i(3, { " error " }), -- Linebreak
         t({ "{", "\t" }),
-        -- Last Placeholder, exit Point of the snippet. EVERY 'outer' SNIPPET NEEDS Placeholder 0.
         i(0), t({ "", "}" })
-    })
+    }),
 
+    s("hands", { -- http handler func
+        t "// ",
+        same(1),
+        t " returns an http.HandlerFunc that processes http requests to ",
+        i(2, { "..." }),
+        t({ "", "func " }), -- new line and add the func at the beginning.
+        i(1),
+        t({ "(w http.ResponseWriter, r *http.Request) {" }),
+        t({ "", "\t" }),
+        i(0), t({ "", "}" })
+    }),
 
 }, {
     key = "go",
@@ -260,6 +256,3 @@ ls.add_snippets("markdown", {
 }, {
     key = "markdown",
 })
-
-
-require("luasnip.loaders.from_vscode").load({ include = { "all" } }) -- Load all snippets

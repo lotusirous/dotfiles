@@ -7,10 +7,18 @@ local check_backspace = function()
     return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
 end
 
+local snip_status_ok, luasnip = pcall(require, "luasnip")
+if not snip_status_ok then
+  return
+end
+
 cmp.setup({
     sources = {
-        { name = "nvim_lsp" }, { name = "path" }, { name = "luasnip" },
-        { name = "buffer", keyword_length = 4 }
+        { name = "nvim_lsp" },
+        { name = "path" },
+        { name = "luasnip" },
+        { name = "buffer", keyword_length = 4 },
+        { name = 'nvim_lsp_signature_help' }
         -- {name = "nvim_lua"}
         -- {name = "look"}
     },
@@ -62,15 +70,24 @@ cmp.setup({
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.close(),
         ["<CR>"] = cmp.mapping.confirm { select = true },
-        ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif check_backspace() then
-                fallback()
-            else
-                fallback()
-            end
-        end, { "i", "s" })
+        -- The tab key is difficult to navigate between the next snippet and completion.
+        -- So, I have to turn it off. You can use ctl-K instead
+
+        -- ["<Tab>"] = cmp.mapping(function(fallback)
+        --     if cmp.visible() then
+        --       cmp.select_next_item()
+        --     -- elseif luasnip.expandable() then
+        --     --   luasnip.expand()
+        --     -- elseif luasnip.expand_or_jumpable() then
+        --     --   luasnip.expand_or_jump()
+        --     elseif check_backspace() then
+        --       fallback()
+        --     else
+        --       fallback()
+        --     end
+        -- end
+        -- ,
+        -- { "i", "s" })
     },
     experimental = { native_menu = false, ghost_text = false }
 })
