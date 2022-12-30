@@ -1,0 +1,10 @@
+{
+  "*.go": {
+    "alternate": "tests/{}.py",
+    "type": "source"
+  },
+  "*_test.go": {
+    "alternate": "{{_cursor_}}/{}.py",
+    "type": "test"
+  }
+}

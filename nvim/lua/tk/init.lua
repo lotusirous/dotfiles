@@ -1,0 +1,8 @@
+require('tk.autocmds')
+require('tk.autopairs')
+require('tk.cmp')
+require('tk.comment')
+require('tk.lsp-format')
+require('tk.treesitter')
+require('tk.luasnip')
+require('tk.lsp')
