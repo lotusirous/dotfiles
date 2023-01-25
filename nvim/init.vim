@@ -242,6 +242,7 @@ nnoremap <leader>Y gg"+yG
 
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>m :NERDTreeFind<CR>
+nnoremap <leader>r :NERDTreeRefreshRoot<CR>
 
 " Template
 let g:sonictemplate_vim_template_dir = expand('~/.config/nvim/templates')
