@@ -11,8 +11,6 @@ local utils = require("tk.luasnippets.utils")
 ls.add_snippets("markdown", {
     -- Use a function to execute any shell command and print its text.
     s("tday", f(utils.bash, {}, { user_args = { "date" } })),
-
-
 }, {
     key = "markdown",
 })

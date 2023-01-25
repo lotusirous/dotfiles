@@ -1,3 +1,14 @@
+local extensions = {
+    javascript = "js",
+    javascriptreact = "jsx",
+    json = "json",
+    jsonc = "jsonc",
+    markdown = "md",
+    typescript = "ts",
+    typescriptreact = "tsx",
+}
+
+
 local prettier = {
     tabWidth = function()
         return vim.opt.shiftwidth:get()
@@ -6,6 +17,7 @@ local prettier = {
     trailingComma = "all",
     configPrecedence = "prefer-file",
     exclude = { "tsserver", "jsonls" },
+
 }
 require("lsp-format").setup {
     typescript = prettier,
@@ -27,7 +39,11 @@ require("lsp-format").setup {
     python = {
         lineLength = 120,
     },
-    markdown = prettier,
+    markdown = {
+        ft = function()
+            return extensions[vim.bo.filetype]
+        end,
+    },
     sh = {
         tabWidth = 4,
     },

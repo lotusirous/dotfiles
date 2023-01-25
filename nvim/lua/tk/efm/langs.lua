@@ -42,6 +42,15 @@ local deno_fmt_markdown = {
 	formatCommand = "deno fmt - --ext md ${--options-line-width:lineLength}",
 	formatStdin = true
 }
+
+
+
+local deno_fmt = {
+	formatCommand = "deno fmt - --ext ${ft} ${--options-line-width:lineLength}",
+	formatStdin = true
+}
+
+
 local deno_fmt_js = {
 	formatCommand = "deno fmt - --ext js ${--options-line-width:lineLength}",
 	formatStdin = true
@@ -88,7 +97,7 @@ return {
 	python = { black, isort },
 	json = { json_jq },
 	javascript = { deno_fmt_js },
-	markdown = { deno_fmt_markdown, cbfmt },
+	markdown = { prettier, cbfmt },
 	css = { prettier },
 	html = { prettier },
 	scss = { prettier },
