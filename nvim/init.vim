@@ -227,6 +227,7 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>gs :Git<CR>
 nnoremap <leader>` :Marks<CR>
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>ps :Rg<CR>

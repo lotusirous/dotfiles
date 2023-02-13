@@ -11,9 +11,9 @@ end
 local types = require("cmp.types")
 
 local priority_map = {
-	[types.lsp.CompletionItemKind.EnumMember] = 1,
-	[types.lsp.CompletionItemKind.Variable] = 2,
-	[types.lsp.CompletionItemKind.Text] = 100,
+    [types.lsp.CompletionItemKind.EnumMember] = 1,
+    [types.lsp.CompletionItemKind.Variable] = 2,
+    [types.lsp.CompletionItemKind.Text] = 100,
 }
 
 local kindCompare = function(entry1, entry2)
@@ -63,10 +63,10 @@ cmp.setup({
 	sorting = {
 		priority_weight = 100,
 		comparators = {
+			kindCompare,
 			cmp.config.compare.offset,
 			cmp.config.compare.exact,
 			cmp.config.compare.score,
-			kindCompare,
 			underscore_compare,
 			cmp.config.compare.sort_text,
 			cmp.config.compare.length,

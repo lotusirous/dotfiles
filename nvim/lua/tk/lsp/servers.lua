@@ -8,8 +8,8 @@ local capabilities = require("tk.lsp.handlers").capabilities
 
 -- Server settings
 
-local sumneko_root_path = "/Users/gru-2019015/local/lsp/lua-language-server"
-local sumneko_binary = sumneko_root_path .. "/bin/macOS/lua-language-server"
+local lua_lsp_root_path = "/Users/gru-2019015/local/lsp/lua-language-server/bin"
+local lua_lsp_binary = lua_lsp_root_path .. "/lua-language-server"
 
 lspconfig.pyright.setup({
 	on_attach = on_attach,
@@ -74,10 +74,10 @@ lspconfig.gopls.setup({
 	flags = { debounce_text_changes = 200 },
 })
 
-lspconfig.sumneko_lua.setup({
+lspconfig.lua_language_server.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
-	cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
+	cmd = { lua_lsp_binary, "-E", lua_lsp_root_path .. "/main.lua" },
 	settings = {
 		Lua = {
 			runtime = {
