@@ -70,11 +70,10 @@ lspconfig.gopls.setup({
 			},
 		},
 	},
-
 	flags = { debounce_text_changes = 200 },
 })
 
-lspconfig.lua_language_server.setup({
+lspconfig.lua_ls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 	cmd = { lua_lsp_binary, "-E", lua_lsp_root_path .. "/main.lua" },
@@ -96,6 +95,9 @@ lspconfig.lua_language_server.setup({
 					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
 					[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
 				},
+			},
+			telemetry = {
+				enable = false,
 			},
 		},
 	},
