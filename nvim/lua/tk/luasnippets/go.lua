@@ -25,6 +25,17 @@ ls.add_snippets("go", {
         i(4),
         t({ "", "}" }),
     }),
+    s("tff", {
+        t({"func test"}), i(1), t({"() func(*testing.T) {", ""}),
+        t({"\t"}),
+        t({"return func(t *testing.T) {", ""}),
+        t("\t\t"),
+        i(2),
+        t({"\t", ""}),
+        t("\t"),
+        t({"}", ""}),
+        t("}")
+    }),
 
     s("iferr", {
         t({"if err != nil {", ""}),
