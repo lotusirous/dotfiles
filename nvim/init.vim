@@ -4,6 +4,10 @@ set cursorline
 "set guicursor=
 
 
+" neovim 0.8 enable the mouse by default which is bad
+set mouse=
+
+
 set noerrorbells
 set visualbell " Flash screen instead of beep sound
 
@@ -33,8 +37,9 @@ set hidden " Save file when switching buffer
 set termguicolors
 set signcolumn=yes " for git
 
-"set spell
 
+
+set inccommand=split
 
 " unfold by default
 set foldlevelstart=99
@@ -62,11 +67,13 @@ Plug 'gruvbox-community/gruvbox'
 "Plug 'nvim-lualine/lualine.nvim'
 Plug 'itchyny/lightline.vim'
 Plug 'shinchu/lightline-gruvbox.vim'
+"Plug 'mengelbrecht/lightline-bufferline'
 Plug 'mbbill/undotree'
 Plug 'windwp/nvim-autopairs'
-Plug 'preservim/nerdtree'
 "Plug 'tpope/vim-vinegar'
 
+
+Plug 'preservim/nerdtree'
 
 " Navigation
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -92,15 +99,29 @@ Plug 'dkarter/bullets.vim'
 
 
 Plug 'neovim/nvim-lspconfig'
+
+Plug 'lukas-reineke/lsp-format.nvim'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+
 Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
+
+
+"Plug 'nvim-lua/plenary.nvim'
+
+"Plug 'jose-elias-alvarez/null-ls.nvim'
+"Plug 'nvim-telescope/telescope.nvim'
+"Plug 'nvim-telescope/telescope-file-browser.nvim'
+
+"Plug 'bling/vim-bufferline'
+
 
 " Snippet
-Plug 'L3MON4D3/LuaSnip'
+
 Plug 'rafamadriz/friendly-snippets'
 
 
@@ -139,21 +160,20 @@ autocmd FileType markdown set lcs=tab:→\
 
 " Status line
 set laststatus=2
+"set showtabline=2
 let g:lightline = {}
-let g:lightline.colorscheme = 'gruvbox'
+let g:lightline.colorscheme = "gruvbox"
+" let g:lightline#bufferline#show_number  = 1
+" let g:lightline#bufferline#shorten_path = 0
+" let g:lightline#bufferline#unnamed      = '[No Name]'
+" let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
+" let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+" let g:lightline.component_type   = {'buffers': 'tabsel'}
+"let g:lightline#bufferline#number_separator = "|"
+
 
 " Lua modules
-"lua require('tk.lualine')
-lua require('tk.cmp')
-lua require('tk.lsp')
-lua require('tk.treesitter')
-lua require('tk.autopairs')
-lua require('tk.comment')
-lua require('tk.cl_extention')
-lua require('tk.luasnip')
-
-
-
+lua require('tk.init')
 
 
 if executable('rg')
@@ -164,25 +184,15 @@ endif
 let g:loaded_netrw       = 1
 let g:loaded_netrwPlugin = 1
 
+" The minimal UI has a bug: https://github.com/preservim/nerdtree/issues/1321
+" This requires a hot fix locally: https://github.com/preservim/nerdtree/pull/1322/files
 let NERDTreeMinimalUI=1
 let NERDTreeShowLineNumbers=1
 let NERDTreeShowHidden=1
+let g:NERDTreeWinSize=45
 
 
 
-
-
-
-
-" LuaSnip
-imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'
-inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
-
-snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
-snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
-
-imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
-smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
 
 
 " use this function by :call EmptyRegisters()
@@ -193,7 +203,7 @@ fun! EmptyRegisters()
     endfor
 endfun
 
-" Wonderfull mapping
+" Wonderful mapping
 inoremap <C-c> <esc>
 let mapleader = " "
 
@@ -206,6 +216,7 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>gs :Git<CR>
 nnoremap <leader>` :Marks<CR>
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>ps :Rg<CR>
@@ -220,13 +231,11 @@ nnoremap <leader>Y gg"+yG
 
 
 nnoremap <leader>n :NERDTreeToggle<CR>
-nnoremap <leader>r :NERDTreeFind<CR>
+nnoremap <leader>m :NERDTreeFind<CR>
+nnoremap <leader>r :NERDTreeRefreshRoot<CR>
 
 " Template
 let g:sonictemplate_vim_template_dir = expand('~/.config/nvim/templates')
-
-
-
 
 
 " EasyAlign the code
@@ -246,7 +255,7 @@ let g:easy_align_delimiters[';'] = { 'pattern': ';', 'ignore_groups': ['String']
 
 " Enable hard time mode
 let g:hardtime_default_on = 0
-let g:hardtime_showmsg = 1
+let g:hardtime_showmsg = 0
 
 
 " Required environment for many plugins
