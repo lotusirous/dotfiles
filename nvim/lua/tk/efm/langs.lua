@@ -64,14 +64,6 @@ local luafmt = {formatCommand = "lua-format -i", formatStdin = true}
 
 -- You need to install npm i -g prettier prettier-plugin-solidity
 
-local eslint = {
-    lintCommand = "eslint_d -f visualstudio --stdin --stdin-filename ${INPUT}",
-    lintIgnoreExitCode = true,
-    lintStdin = true,
-    lintFormats = {"%f(%l,%c): %tarning %m", "%f(%l,%c): %rror %m"},
-    lintSource = "eslint"
-}
-
 -- format code inside the markdown code block.
 local cbfmt = {
     formatCommand = "cbfmt --best-effort --stdin-filepath ${INPUT}",
@@ -84,12 +76,21 @@ local write_good = {
     lintFormats = {"%f:%l:%c:%m", "%f:%l:%c %m", "%f: %l: %m"}
 }
 
+local eslintd = {
+    lintCommand = "eslint_d -f visualstudio --stdin --stdin-filename ${INPUT}",
+    lintIgnoreExitCode = true,
+    lintStdin = true,
+    lintFormats = {"%f(%l,%c): %tarning %m", "%f(%l,%c): %rror %m"},
+    lintSource = "eslint"
+}
+
 return {
     ["="] = {misspell},
     go = {golangci_lint, goimports, gofumpt},
     python = {black, isort},
     json = {json_jq},
     javascript = {deno_fmt_js},
+    typescript = {prettier, eslintd},
     markdown = {deno_fmt_markdown, cbfmt},
     css = {prettier},
     html = {prettier},

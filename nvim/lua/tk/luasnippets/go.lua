@@ -14,11 +14,11 @@ ls.add_snippets("go", {
     s("pf", {
         t("// "),
         rep(1),
-        t(" "),             -- space after descriptinon
-        i(4, { "..." }),    -- paste function name
+        t(" "), -- space after descriptinon
+        i(4, { "..." }), -- paste function name
         t({ "", "func " }), -- Placeholder/Insert.
         i(1),
-        t("("),             -- Placeholder with initial text.
+        t("("), -- Placeholder with initial text.
         i(2, ""),
         t(") "),
         i(3), -- Linebreak
@@ -26,7 +26,6 @@ ls.add_snippets("go", {
         i(4),
         t({ "", "}" }),
     }),
-
 
     -- s("ex1", fmta([[
     --     if err != nil {
@@ -142,6 +141,25 @@ ls.add_snippets("go", {
         i(3),
         fn = i(1, ""),
     })),
+
+    s("fmax", fmta([[
+    func max(x, y int) int {
+        if x > y {
+            return x
+        }
+        return y
+    }[]
+    ]], i(1, ""), { delimiters = "[]" })),
+
+    s("fmin", fmta([[
+    func min(x, y int) int {
+        if x < y {
+            return x
+        }
+        return y
+    }[]
+    ]], i(1, ""), { delimiters = "[]" })),
+
 
 }, {
     key = "go",

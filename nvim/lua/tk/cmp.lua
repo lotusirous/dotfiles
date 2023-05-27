@@ -89,6 +89,9 @@ cmp.setup({
 			end
 		end,
 		["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+		["<Up>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+		["<Down>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+
 
 
 		["<C-d>"] = cmp.mapping.scroll_docs(-5),
