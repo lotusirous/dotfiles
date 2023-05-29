@@ -59,6 +59,9 @@ null_ls.setup({
     null_ls.builtins.formatting.gofumpt,
 
     null_ls.builtins.diagnostics.golangci_lint,
+
+    -- for angular
+    require("typescript.extensions.null-ls.code-actions"),
     -- null_ls.builtins.diagnostics.eslint_d.with({
     --   filetypes = {"javascript", "typescript"}
     -- }),

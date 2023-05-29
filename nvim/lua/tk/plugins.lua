@@ -78,6 +78,8 @@ return require('packer').startup(function(use)
 
 
 
+  -- for typescript & angular
+  use 'jose-elias-alvarez/typescript.nvim'
   -- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/guides/integrate-with-null-ls.md
   use({
     "jose-elias-alvarez/null-ls.nvim",
