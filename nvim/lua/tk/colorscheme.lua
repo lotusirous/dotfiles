@@ -20,7 +20,7 @@ require("gruvbox").setup({
     NormalFloat = { fg = "#f9f5d7", bg = "#32302f" },
   },
   dim_inactive = false,
-  transparent_mode = false,
+  transparent_mode = true,
 })
 
 vim.cmd.colorscheme('gruvbox')
