@@ -66,3 +66,7 @@ vim.g.NERDTreeWinSize = 45
 -- Python host programs
 vim.g.python_host_prog = vim.env.HOME .. '/.pyenv/versions/2.7.18/bin/python'
 vim.g.python3_host_prog = vim.env.HOME .. '/.pyenv/versions/3.11.3/bin/python'
+
+vim.opt.spell = true
+vim.opt.spelllang = 'en_us'
+
