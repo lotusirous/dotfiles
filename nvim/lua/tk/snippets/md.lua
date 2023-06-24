@@ -1,9 +1,9 @@
 local ls = require("luasnip")
 local s = ls.snippet
-local t = ls.text_node
+-- local t = ls.text_node
 local i = ls.insert_node
 local f = ls.function_node
-local rep = require("luasnip.extras").rep
+-- local rep = require("luasnip.extras").rep
 local fmt = require("luasnip.extras.fmt").fmt
 local utils = require("tk.snippets.utils")
 local extras = require("luasnip.extras")

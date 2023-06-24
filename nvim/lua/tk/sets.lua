@@ -1,7 +1,7 @@
 vim.o.cursorline = true
 
 -- Disable mouse support
-vim.o.mouse = ''
+vim.o.mouse = ""
 
 -- Disable error bells and use visual bell
 vim.o.errorbells = false
@@ -31,7 +31,7 @@ vim.o.backup = false
 vim.o.writebackup = false
 
 -- Set undodir and enable undofile
-vim.o.undodir = vim.env.HOME .. '/.config/nvim/undodir'
+vim.o.undodir = vim.env.HOME .. "/.config/nvim/undodir"
 vim.o.undofile = true
 
 -- Configure search options
@@ -49,7 +49,7 @@ vim.o.termguicolors = true
 -- Enable sign column for git
 -- vim.wo.signcolumn = 'yes'
 vim.wo.signcolumn = "yes:1"
-
+-- vim.o.showbreak = [[↪ ]]
 -- Disable netrw and netrwPlugin
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -60,13 +60,28 @@ vim.g.NERDTreeShowLineNumbers = 1
 vim.g.NERDTreeShowHidden = 1
 vim.g.NERDTreeWinSize = 45
 
--- vim.opt.list = true
--- vim.opt.listchars:append "eol:↴"
+-- vim.opt.list = true -- invisible chars
+-- vim.opt.listchars = {
+--   eol = "¬",
+--   tab = "  ",     --"  ▸", -- Alternatives: '▷▷',
+--   extends = "›", -- Alternatives: … »
+--   precedes = "‹", -- Alternatives: … «
+--   trail = "•",  -- BULLET (U+2022, UTF-8: E2 80 A2), Alternatives: ·
+--   lead = "·",
+--   multispace = "·",
+-- }
 
 -- Python host programs
-vim.g.python_host_prog = vim.env.HOME .. '/.pyenv/versions/2.7.18/bin/python'
-vim.g.python3_host_prog = vim.env.HOME .. '/.pyenv/versions/3.11.3/bin/python'
+vim.g.python_host_prog = vim.env.HOME .. "/.pyenv/versions/2.7.18/bin/python"
+vim.g.python3_host_prog = vim.env.HOME .. "/.pyenv/versions/3.11.3/bin/python"
 
 vim.opt.spell = true
-vim.opt.spelllang = 'en_us'
+vim.opt.spelllang = "en_us"
+vim.o.spelloptions = "camel"
 
+-- better for reading a log pop up message.
+vim.wo.linebreak = true
+
+-- Set grep default grep command with ripgrep
+-- vim.opt.grepprg = "rg --vimgrep --follow"
+-- vim.opt.errorformat:append("%f:%l:%c%p%m")
