@@ -1,6 +1,4 @@
 local keymap = vim.keymap
-local cwd = vim.fn.getcwd()
-local has_git = vim.fn.isdirectory(cwd .. "/.git")
 
 -- Wonderful mapping
 keymap.set("i", "<C-c>", "<esc>", { noremap = true })
@@ -20,7 +18,7 @@ keymap.set("n", "<leader>b", ":Buffers<CR>", { noremap = true })
 keymap.set("n", "<leader>gs", ":FloatermNew --height=0.95 --width=0.95 --name=lazygit lazygit<CR>")
 keymap.set("n", "<leader>`", ":Marks<CR>", { noremap = true })
 --keymap.set("n", "<C-p>", ":Files<CR>", { noremap = true })
-keymap.set("n", "<C-p>", has_git == 1 and ":GFiles<CR>" or ":Files<CR>", { noremap = true })
+keymap.set("n", "<C-p>", ":Files<CR>", { noremap = true })
 keymap.set("n", "<leader>ps", ":Rg<CR>", { noremap = true })
 keymap.set("n", "<leader>ft", ":Filetypes<CR>", { noremap = true })
 

@@ -3,9 +3,11 @@ local s = ls.snippet
 -- local rep = require("luasnip.extras").rep
 local fmt = require("luasnip.extras.fmt").fmt
 
-
 ls.add_snippets("json", {
-    s("bpost", fmt([[
+	s(
+		"prettier",
+		fmt(
+			[[
 {
   "bracketSpacing": false,
   "singleQuote": true,
@@ -14,7 +16,10 @@ ls.add_snippets("json", {
   "semi": true,
   "printWidth": 120
 }
-    ]], {}))
+    ]],
+			{}
+		)
+	),
 }, {
-    key = "json",
+	key = "json",
 })
