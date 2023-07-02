@@ -10,33 +10,72 @@ local rep = require("luasnip.extras").rep
 local fmta = require("luasnip.extras.fmt").fmta -- similar to fmt with <> placeholder
 
 ls.add_snippets("go", {
-	s("pf", {
-		t("// "),
+	s("pf", fmta([[
+// <> <>
+func <>(<>) <> {
+	<>
+}<>
+	 ]], {
 		rep(1),
-		t(" "), -- space after descriptinon
-		i(4, { "..." }), -- paste function name
-		t({ "", "func " }), -- Placeholder/Insert.
-		i(1),
-		t("("), -- Placeholder with initial text.
+		i(4, "..."),
+		i(1, ""),
 		i(2, ""),
-		t(") "),
-		i(3), -- Linebreak
-		t({ "{", "\t" }),
+		i(3),
+		i(5),
+		i(6),
+	}, { repeat_duplicates = true }) ),
+
+	s("mpf", fmta([[
+// <> <>
+func (<>) <>(<>) <> {
+	<>
+}<>
+	 ]], {
+		rep(2),
+		i(5, "..."),
+		i(1, ""),
+		i(2, ""),
+		i(3),
 		i(4),
-		t({ "", "}" }),
-	}),
+		i(6),
+		i(7),
+	}, { repeat_duplicates = true }) ),
+
+	s("ref", fmta([[
+[<>]: <>
+	 ]], {
+		i(1),
+		i(2),
+	}, { repeat_duplicates = true }) ),
+
+	s("tys", fmta([[
+// A <> <>
+type <> struct {
+	<>
+}<>
+	 ]], {
+		rep(1),
+		i(2),
+		i(1),
+		i(3),
+		i(4),
+	}, { repeat_duplicates = true }) ),
+
+	s("tyi", fmta([[
+// <> is <>
+type <> interface {
+	<>
+}<>
+	 ]], {
+		rep(1),
+		i(2),
+		i(1),
+		i(3),
+		i(4),
+	}, { repeat_duplicates = true }) ),
 
 	s("ctx", { t("ctx context.Context") }),
 
-	-- s("ex1", fmta([[
-	--     if err != nil {
-	--         <foo>
-	--     }
-	--     <bar>
-	-- ]], {
-	--     foo = i(1),
-	--     bar = utils.same(1)
-	-- })),
 	s(
 		"webserver",
 		fmta(

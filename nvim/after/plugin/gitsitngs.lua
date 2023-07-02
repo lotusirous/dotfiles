@@ -1,6 +1,4 @@
 local gitsigns = require("gitsigns")
-local line = vim.fn.line
-
 local function on_attach(bufnr)
 	local function map(mode, l, r, opts)
 		opts = opts or {}

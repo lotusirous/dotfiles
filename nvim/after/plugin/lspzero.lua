@@ -42,7 +42,7 @@ lsp.format_on_save({
 	},
 	servers = {
 		-- the formatter will not run if your languages are not defined here.
-		["null-ls"] = { "javascript", "html", "typescript", "lua", "go", "markdown", "python", "json" },
+		["null-ls"] = { "javascript", "html", "typescript", "lua", "go", "markdown", "python", "json", "jsonc" },
 	},
 })
 
@@ -50,18 +50,16 @@ lsp.setup()
 
 local null_ls = require("null-ls")
 
-local function get_extra_args()
-	local root = vim.fn.getcwd()
-	local angular_json = root .. "/angular.json"
-	local has_angular_json = vim.fn.filereadable(angular_json) == 1
-	-- common options
-	local base = { "--no-trailing-whitespace" }
-	if has_angular_json then
-		table.insert(base, "--semi")
-	end
-	return base
-end
-local null_ls = require("null-ls")
+-- local function get_extra_args()
+-- 	local root = vim.fn.getcwd()
+-- 	local angular_json = root .. "/angular.json"
+-- 	local has_angular_json = vim.fn.filereadable(angular_json) == 1
+-- 	local base = { "--no-trailing-whitespace" }
+-- 	if has_angular_json then
+-- 		table.insert(base, "--semi")
+-- 	end
+-- 	return base
+-- end
 
 null_ls.setup({
 	sources = {
@@ -69,14 +67,14 @@ null_ls.setup({
 		null_ls.builtins.formatting.prettierd.with({
 			filetypes = { "javascript", "typescript", "css", "html" },
 			exclude_filetypes = { "markdown" },
-			extra_args = get_extra_args(),
+			extra_args = { "--no-trailing-whitespace", "--semi" },
 		}),
 
 		null_ls.builtins.formatting.jq.with({
 			filetypes = { "json" },
 		}),
 		null_ls.builtins.formatting.deno_fmt.with({
-			filetypes = { "markdown" },
+			filetypes = { "markdown", "jsonc" },
 		}),
 		-- python
 		null_ls.builtins.formatting.black,
@@ -85,6 +83,8 @@ null_ls.setup({
 		null_ls.builtins.formatting.goimports,
 		null_ls.builtins.formatting.gofumpt,
 		null_ls.builtins.diagnostics.golangci_lint,
+
+		null_ls.builtins.diagnostics.eslint_d,
 
 		null_ls.builtins.formatting.stylua,
 

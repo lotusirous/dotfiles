@@ -49,7 +49,7 @@ vim.o.termguicolors = true
 -- Enable sign column for git
 -- vim.wo.signcolumn = 'yes'
 vim.wo.signcolumn = "yes:1"
--- vim.o.showbreak = [[↪ ]]
+vim.o.showbreak = [[↪ ]]
 -- Disable netrw and netrwPlugin
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -61,14 +61,16 @@ vim.g.NERDTreeShowHidden = 1
 vim.g.NERDTreeWinSize = 45
 
 -- vim.opt.list = true -- invisible chars
+-- vim.opt.listchars:append "eol:¬"
+
 -- vim.opt.listchars = {
---   eol = "¬",
---   tab = "  ",     --"  ▸", -- Alternatives: '▷▷',
---   extends = "›", -- Alternatives: … »
---   precedes = "‹", -- Alternatives: … «
---   trail = "•",  -- BULLET (U+2022, UTF-8: E2 80 A2), Alternatives: ·
---   lead = "·",
---   multispace = "·",
+-- eol = "¬",
+-- 	tab = "    ", --"  ▸", -- Alternatives: '▷▷',
+-- 	extends = "›", -- Alternatives: … »
+-- precedes = "‹", -- Alternatives: … «
+-- trail = "•", -- BULLET (U+2022, UTF-8: E2 80 A2), Alternatives: ·
+-- 	lead = "⋅",
+-- 	multispace = "⋅",
 -- }
 
 -- Python host programs
@@ -82,6 +84,8 @@ vim.o.spelloptions = "camel"
 -- better for reading a log pop up message.
 vim.wo.linebreak = true
 
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 -- Set grep default grep command with ripgrep
 -- vim.opt.grepprg = "rg --vimgrep --follow"
 -- vim.opt.errorformat:append("%f:%l:%c%p%m")
