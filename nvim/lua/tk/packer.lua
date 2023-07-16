@@ -78,10 +78,9 @@ return require("packer").startup(function(use)
 	use("tpope/vim-sleuth")
 	use({ "lewis6991/gitsigns.nvim" })
 
-	use({ "lotusirous/clipboard-image.nvim" })
-
 	-- Go development
 	use("buoto/gotests-vim")
+	use("vim-test/vim-test")
 	use("mattn/vim-goaddtags")
 
 	-- use({

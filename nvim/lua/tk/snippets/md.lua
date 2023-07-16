@@ -8,14 +8,16 @@ local fmt = require("luasnip.extras.fmt").fmt
 local utils = require("tk.snippets.utils")
 local extras = require("luasnip.extras")
 
-
-
-
 ls.add_snippets("markdown", {
-    -- Use a function to execute any shell command and print its text.
-    s("tday", f(utils.bash, {}, { user_args = { "date" } })),
+	-- Use a function to execute any shell command and print its text.
+	s("tday", f(utils.bash, {}, { user_args = { "date" } })),
 
-    s("bpost", fmt([[
+	s("mt", fmt([[\\({}\\)]], { i(1, "") })),
+
+	s(
+		"bpost",
+		fmt(
+			[[
     ---
     layout: layouts/post.njk
     title: {title}
@@ -25,12 +27,14 @@ ls.add_snippets("markdown", {
         - "golang"
     ---
 
-    ]], {
-        title = i(1, ""),
-        description = i(2, ""),
-        date = extras.partial(os.date, "%Y-%m-%d")
-
-    }))
+    ]],
+			{
+				title = i(1, ""),
+				description = i(2, ""),
+				date = extras.partial(os.date, "%Y-%m-%d"),
+			}
+		)
+	),
 }, {
-    key = "markdown",
+	key = "markdown",
 })

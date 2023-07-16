@@ -70,11 +70,8 @@ null_ls.setup({
 			extra_args = { "--no-trailing-whitespace", "--semi" },
 		}),
 
-		null_ls.builtins.formatting.jq.with({
-			filetypes = { "json" },
-		}),
 		null_ls.builtins.formatting.deno_fmt.with({
-			filetypes = { "markdown", "jsonc" },
+			filetypes = { "markdown", "jsonc", "json" },
 		}),
 		-- python
 		null_ls.builtins.formatting.black,

@@ -10,6 +10,8 @@ require("luasnip").config.set_config({
 	updateevents = "TextChanged,TextChangedI",
 })
 
+require("tk.snippets.all")
 require("tk.snippets.go")
 require("tk.snippets.js")
+require("tk.snippets.json")
 require("tk.snippets.md")

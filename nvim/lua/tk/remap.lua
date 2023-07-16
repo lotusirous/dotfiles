@@ -43,4 +43,3 @@ keymap.set("n", "<leader>m", ":NERDTreeFind<CR>", { noremap = true })
 keymap.set("n", "<leader>r", ":NERDTreeRefreshRoot<CR>", { noremap = true })
 
 -- paste image in markdown
-keymap.set("n", "<F10>", ":PasteImg<CR>", { noremap = true })
