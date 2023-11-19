@@ -203,12 +203,13 @@ type <> interface {
 		"hands",
 		fmta(
 			[[
-        // <> returns an http.HandlerFunc that processes http requests to
-        // <>
-        func <fn>(w http.ResponseWriter, r *http.Request) {
-            <>
-        }
-    ]],
+// <> returns an http.HandlerFunc that processes http requests to
+// <>
+func <fn>(<>) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+	}
+}
+]],
 			{
 				rep(1),
 				i(2),

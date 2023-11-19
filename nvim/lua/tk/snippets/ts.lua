@@ -11,5 +11,5 @@ ls.add_snippets("javascript", {
 	s("req", fmt("const {} = require('{}')", { i(1, "default"), rep(1) })),
 	s("logp", fmt("console.log('[+] {}')", { i(1, "") })),
 }, {
-	key = "javascript",
+	key = "typescript",
 })

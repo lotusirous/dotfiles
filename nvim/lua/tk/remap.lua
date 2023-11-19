@@ -16,8 +16,11 @@ keymap.set("n", "<leader>gs", ":FloatermNew --height=0.95 --width=0.95 --name=la
 keymap.set("n", "<leader>`", ":Marks<CR>", { noremap = true })
 --keymap.set("n", "<C-p>", ":Files<CR>", { noremap = true })
 keymap.set("n", "<leader>b", ":Buffers<CR>", { noremap = true })
+keymap.set("n", "<leader>gg", ":GBrowse<CR>", { noremap = true })
+keymap.set("n", "<leader>gb", ":Git blame<CR>", { noremap = true })
 keymap.set("n", "<C-p>", ":Files<CR>", { noremap = true })
-keymap.set("n", "<leader>ps", ":Rg<CR>", { noremap = true })
+-- RG result is better than Rg
+keymap.set("n", "<leader>rg", ":RG<CR>", { noremap = true })
 keymap.set("n", "<leader>ft", ":Filetypes<CR>", { noremap = true })
 
 -- Easier Moving between splits

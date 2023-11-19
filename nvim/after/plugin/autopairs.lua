@@ -20,6 +20,7 @@ npairs.setup({
 		highlight = "PmenuSel",
 		highlight_grey = "LineNr",
 	},
+	enable_check_bracket_line = false
 })
-
+npairs.get_rules("'")[1].not_filetypes = { "scheme", "lisp" }
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))

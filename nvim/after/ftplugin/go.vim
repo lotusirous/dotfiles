@@ -26,3 +26,5 @@
 " 	\ 'ctagsargs' : '-sort -silent'
 " \ }
 "
+"
+let g:gotests_template = ""

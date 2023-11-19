@@ -48,11 +48,14 @@ vim.o.termguicolors = true
 
 -- Enable sign column for git
 -- vim.wo.signcolumn = 'yes'
+vim.opt.colorcolumn = "120"
 vim.wo.signcolumn = "yes:1"
 vim.o.showbreak = [[↪ ]]
+
 -- Disable netrw and netrwPlugin
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- tpope open github in browser require this option
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
 
 -- Enable NERDTree minimal UI
 vim.g.NERDTreeMinimalUI = 1
@@ -61,7 +64,7 @@ vim.g.NERDTreeShowHidden = 1
 vim.g.NERDTreeWinSize = 45
 
 -- vim.opt.list = true -- invisible chars
--- vim.opt.listchars:append "eol:¬"
+-- vim.opt.listchars:append("eol:¬")
 
 -- vim.opt.listchars = {
 -- eol = "¬",

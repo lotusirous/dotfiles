@@ -1,13 +1,19 @@
-require("mason").setup()
-require("mason-lspconfig").setup({
-	-- angularls and tsserver must be installed together in order to run the angularls
-	ensure_installed = { "lua_ls", "emmet_ls", "angularls", "pyright", "tsserver", "gopls" },
+local lsp_zero = require("lsp-zero").preset({})
+
+-- Fix Undefined global 'vim'
+-- lsp.nvim_workspace()
+lsp_zero.configure("lua_ls", {
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "vim" },
+			},
+		},
+	},
 })
 
-local lsp = require("lsp-zero").preset({})
-
 -- enable folding by lsp server
-lsp.set_server_config({
+lsp_zero.set_server_config({
 	capabilities = {
 		textDocument = {
 			foldingRange = {
@@ -18,8 +24,8 @@ lsp.set_server_config({
 	},
 })
 
-lsp.on_attach(function(client, bufnr)
-	lsp.default_keymaps({ buffer = bufnr })
+lsp_zero.on_attach(function(client, bufnr)
+	lsp_zero.default_keymaps({ buffer = bufnr })
 	local opts = { noremap = true, silent = true }
 	vim.keymap.set("n", "<leader>rn", function()
 		vim.lsp.buf.rename()
@@ -35,18 +41,42 @@ lsp.on_attach(function(client, bufnr)
 	end, opts)
 end)
 
-lsp.format_on_save({
+lsp_zero.format_on_save({
 	format_opts = {
 		async = false,
 		timeout_ms = 10000,
 	},
 	servers = {
 		-- the formatter will not run if your languages are not defined here.
-		["null-ls"] = { "javascript", "html", "typescript", "lua", "go", "markdown", "python", "json", "jsonc" },
+		["null-ls"] = {
+			"javascript",
+			"typescriptreact",
+			"html",
+			"sql",
+			"rust",
+			"typescript",
+			"lua",
+			"go",
+			"markdown",
+			"python",
+			"json",
+			"jsonc",
+		},
 	},
 })
 
-lsp.setup()
+require("mason").setup()
+require("mason-lspconfig").setup({
+	-- angularls and tsserver must be installed together in order to run the angularls
+	ensure_installed = { "lua_ls", "rust_analyzer", "emmet_ls", "angularls", "pyright", "tsserver", "gopls" },
+	handlers = {
+		lsp_zero.default_setup,
+		lua_ls = function()
+			local lua_opts = lsp_zero.nvim_lua_ls()
+			require("lspconfig").lua_ls.setup(lua_opts)
+		end,
+	},
+})
 
 local null_ls = require("null-ls")
 
@@ -64,8 +94,9 @@ local null_ls = require("null-ls")
 null_ls.setup({
 	sources = {
 		-- Replace these with the tools you have installed
+		null_ls.builtins.diagnostics.eslint,
 		null_ls.builtins.formatting.prettierd.with({
-			filetypes = { "javascript", "typescript", "css", "html" },
+			filetypes = { "javascript", "typescriptreact", "typescript", "css", "html" },
 			exclude_filetypes = { "markdown" },
 			extra_args = { "--no-trailing-whitespace", "--semi" },
 		}),
@@ -74,31 +105,31 @@ null_ls.setup({
 			filetypes = { "markdown", "jsonc", "json" },
 		}),
 		-- python
-		null_ls.builtins.formatting.black,
+		-- null_ls.builtins.formatting.black,
+		null_ls.builtins.formatting.ruff,
 		null_ls.builtins.formatting.isort,
+		-- rust
+		null_ls.builtins.formatting.rustfmt,
 		-- golang
+		null_ls.builtins.formatting.pg_format,
 		null_ls.builtins.formatting.goimports,
 		null_ls.builtins.formatting.gofumpt,
-		null_ls.builtins.diagnostics.golangci_lint,
-
-		null_ls.builtins.diagnostics.eslint_d,
+		-- null_ls.builtins.diagnostics.golangci_lint,
 
 		null_ls.builtins.formatting.stylua,
 
 		-- for angular
 		require("typescript.extensions.null-ls.code-actions"),
-		-- null_ls.builtins.diagnostics.eslint_d.with({
-		--   filetypes = {"javascript", "typescript"}
-		-- }),
 	},
 })
 
-require("lsp-zero").extend_cmp()
 local cmp = require("cmp")
 local cmp_action = require("lsp-zero.cmp").action()
+local cmp_format = require("lsp-zero").cmp_format()
 local cmp_select_opts = { behavior = cmp.SelectBehavior.Select }
 
 cmp.setup({
+	formatting = cmp_format,
 	sources = {
 		{ name = "path" },
 		{ name = "nvim_lsp" },

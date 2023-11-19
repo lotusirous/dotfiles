@@ -1,6 +1,7 @@
 local ls = require("luasnip")
 local s = ls.snippet
 local f = ls.function_node
+local utils = require("tk.snippets.utils")
 -- local rep = require("luasnip.extras").rep
 -- local fmt = require("luasnip.extras.fmt").fmt
 -- local fmta = require("luasnip.extras.fmt").fmta -- similar to fmt with <> placeholder
@@ -20,6 +21,7 @@ local function uuid()
 end
 
 ls.add_snippets("all", {
+	s("today", f(utils.bash, {}, { user_args = { "date '+%e %B %Y'" } })),
 	s("nts", f(now_timestamp, {}, { user_args = {} })),
 	s("uuid", f(uuid, {}, { user_args = {} })),
 }, {

@@ -1,9 +1,44 @@
+local function is_angular_project()
+	local root = vim.fn.getcwd()
+	local angular_json = root .. "/angular.json"
+	return vim.fn.filereadable(angular_json) == 1
+end
+
+local function add_vanila_ts(base)
+	table.insert(base, {
+		pattern = "/(.*)/(.*).ts$",
+		target = {
+			{
+				target = "/%1/%2.spec.ts",
+				context = "test",
+			},
+		},
+	})
+	table.insert(base, {
+		pattern = "/(.*)/(.*).spec.ts$",
+		target = {
+			{
+				target = "/%1/%2.ts",
+				context = "script",
+			},
+		},
+	})
+end
+
+
+local function mappings()
+	local base = { "golang" }
+
+	if is_angular_project() then
+		table.insert(base, "angular")
+	else
+		add_vanila_ts(base)
+	end
+	return base
+end
+
 require("other-nvim").setup({
-	mappings = {
-		-- builtin mappings
-		"angular",
-		"golang",
-	},
+	mappings = mappings(),
 	transformers = {
 		-- defining a custom transformer
 		lowercase = function(inputString)

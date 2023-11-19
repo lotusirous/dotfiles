@@ -17,9 +17,11 @@ return require("packer").startup(function(use)
 		},
 	})
 
+	use({"ThePrimeagen/harpoon"})
+
 	use({
 		"VonHeikemen/lsp-zero.nvim",
-		branch = "v2.x",
+		branch = "v3.x",
 		requires = {
 			-- LSP Support
 			{ "neovim/nvim-lspconfig" },
@@ -43,7 +45,6 @@ return require("packer").startup(function(use)
 			{ "L3MON4D3/LuaSnip" },
 			{ "rafamadriz/friendly-snippets" },
 			-- formatting
-			-- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/guides/integrate-with-null-ls.md
 			{
 				"jose-elias-alvarez/null-ls.nvim",
 				requires = { "nvim-lua/plenary.nvim" },
@@ -74,6 +75,7 @@ return require("packer").startup(function(use)
 	use("tpope/vim-abolish")
 	use("tpope/vim-unimpaired")
 	use("tpope/vim-fugitive")
+	use("tpope/vim-rhubarb")
 	use("tpope/vim-surround")
 	use("tpope/vim-sleuth")
 	use({ "lewis6991/gitsigns.nvim" })
@@ -107,7 +109,8 @@ return require("packer").startup(function(use)
 	-- })
 	--
 	-- use({ "dstein64/vim-startuptime" })
-	use("lukas-reineke/indent-blankline.nvim")
+	-- use({ "lukas-reineke/indent-blankline.nvim" })
+	use({ "lukas-reineke/indent-blankline.nvim", tag = "v2.20.8" })
 	use({ "voldikss/vim-floaterm" })
 	use({ "rgroli/other.nvim" })
 	use("dstein64/vim-startuptime")
