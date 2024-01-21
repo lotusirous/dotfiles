@@ -4,6 +4,9 @@ local keymap = vim.keymap
 keymap.set("i", "<C-c>", "<esc>", { noremap = true })
 vim.g.mapleader = " "
 
+-- greatest remap ever
+vim.keymap.set("x", "<leader>p", [["_dP]])
+
 -- Keymap
 keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { noremap = true })
 
@@ -22,6 +25,13 @@ keymap.set("n", "<C-p>", ":Files<CR>", { noremap = true })
 -- RG result is better than Rg
 keymap.set("n", "<leader>rg", ":RG<CR>", { noremap = true })
 keymap.set("n", "<leader>ft", ":Filetypes<CR>", { noremap = true })
+
+keymap.set(
+	"n",
+	"<leader>sb",
+	"vim.fn.system('stdsym -web | fzf --prompt \"Symbols> \" --preview \"go doc ' .. vim.fn.shellescape(vim.fn.expand('<cword>')) .. ' | sed s/#/./g\" --bind \"enter:execute('echo https://pkg.go.dev/{} | xargs open')\"')",
+	{ noremap = true }
+)
 
 -- Easier Moving between splits
 keymap.set("n", "<C-j>", "<C-w>j", { noremap = true })
@@ -44,5 +54,7 @@ keymap.set("n", "<leader>Y", 'gg"+yG', { noremap = true })
 
 keymap.set("n", "<leader>m", ":NERDTreeFind<CR>", { noremap = true })
 keymap.set("n", "<leader>r", ":NERDTreeRefreshRoot<CR>", { noremap = true })
+
+keymap.set("c", "<F2>", "\\(.*\\)", { noremap = true })
 
 -- paste image in markdown

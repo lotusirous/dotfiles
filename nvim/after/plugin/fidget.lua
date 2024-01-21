@@ -1,14 +1,25 @@
 require("fidget").setup({
-	text = {
-		spinner = "dots", -- animation shown when tasks are ongoing
-		done = "✔", -- character shown when all tasks are complete
-		commenced = "Started", -- message shown when task starts
-		completed = "Completed", -- message shown when task completes
+	progress = {
+		display = {
+			render_limit = 16, -- How many LSP messages to show at once
+			done_ttl = 3, -- How long a message should persist after completion
+			done_icon = "✔", -- Icon shown when all LSP progress tasks are complete
+			done_style = "Constant", -- Highlight group for completed LSP tasks
+		},
 	},
-	window = {
-		relative = "win", -- where to anchor, either "win" or "editor"
-		blend = 0, -- &winblend for the window
-		zindex = nil, -- the zindex value for the window
-		border = "none", -- style of border for the fidget window
+	notification = {
+		poll_rate = 10,
+		window = {
+			normal_hl = "Comment", -- Base highlight group in the notification window
+			winblend = 0, -- Background color opacity in the notification window
+			border = "none", -- Border around the notification window
+			zindex = 45, -- Stacking priority of the notification window
+			max_width = 0, -- Maximum width of the notification window
+			max_height = 0, -- Maximum height of the notification window
+			x_padding = 1, -- Padding from right edge of window boundary
+			y_padding = 0, -- Padding from bottom edge of window boundary
+			align = "bottom", -- How to align the notification window
+			relative = "editor", -- What the notification window position is relative to
+		},
 	},
 })

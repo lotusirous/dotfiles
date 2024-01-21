@@ -17,7 +17,7 @@ return require("packer").startup(function(use)
 		},
 	})
 
-	use({"ThePrimeagen/harpoon"})
+	use({ "ThePrimeagen/harpoon" })
 
 	use({
 		"VonHeikemen/lsp-zero.nvim",
@@ -54,7 +54,7 @@ return require("packer").startup(function(use)
 		},
 	})
 
-	use({ "j-hui/fidget.nvim", branch = "legacy" })
+	use({ "j-hui/fidget.nvim" })
 
 	-- use("itchyny/lightline.vim")
 	-- use("itchyny/vim-gitbranch")
@@ -115,5 +115,11 @@ return require("packer").startup(function(use)
 	use({ "rgroli/other.nvim" })
 	use("dstein64/vim-startuptime")
 	use("preservim/tagbar")
+	use("justinmk/vim-dirvish")
+	use("AndrewRadev/splitjoin.vim")
+
 	-- use({ "simrat39/symbols-outline.nvim" })
+	use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
+	use({ "luukvbaal/statuscol.nvim" })
+	use({ "sindrets/diffview.nvim" })
 end)

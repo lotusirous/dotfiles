@@ -62,6 +62,7 @@ vim.g.NERDTreeMinimalUI = 1
 vim.g.NERDTreeShowLineNumbers = 1
 vim.g.NERDTreeShowHidden = 1
 vim.g.NERDTreeWinSize = 45
+vim.g.NERDTreeHijackNetrw = 1
 
 -- vim.opt.list = true -- invisible chars
 -- vim.opt.listchars:append("eol:¬")

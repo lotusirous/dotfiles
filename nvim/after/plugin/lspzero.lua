@@ -1,5 +1,13 @@
 local lsp_zero = require("lsp-zero").preset({})
 
+vim.o.fillchars = [[eob: ,fold: ,foldopen: ,foldsep: ,foldclose:>]]
+vim.o.foldcolumn = "1" -- '0' is not bad
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+require("ufo").setup({})
+
 -- Fix Undefined global 'vim'
 -- lsp.nvim_workspace()
 lsp_zero.configure("lua_ls", {
@@ -51,6 +59,7 @@ lsp_zero.format_on_save({
 		["null-ls"] = {
 			"javascript",
 			"typescriptreact",
+			"elixir",
 			"html",
 			"sql",
 			"rust",
@@ -61,6 +70,7 @@ lsp_zero.format_on_save({
 			"python",
 			"json",
 			"jsonc",
+			"proto",
 		},
 	},
 })
@@ -95,7 +105,8 @@ null_ls.setup({
 	sources = {
 		-- Replace these with the tools you have installed
 		null_ls.builtins.diagnostics.eslint,
-		null_ls.builtins.formatting.prettierd.with({
+		null_ls.builtins.formatting.mix,
+		null_ls.builtins.formatting.prettier.with({
 			filetypes = { "javascript", "typescriptreact", "typescript", "css", "html" },
 			exclude_filetypes = { "markdown" },
 			extra_args = { "--no-trailing-whitespace", "--semi" },
@@ -104,6 +115,8 @@ null_ls.setup({
 		null_ls.builtins.formatting.deno_fmt.with({
 			filetypes = { "markdown", "jsonc", "json" },
 		}),
+
+		null_ls.builtins.formatting.buf, -- protobuf
 		-- python
 		-- null_ls.builtins.formatting.black,
 		null_ls.builtins.formatting.ruff,
@@ -116,7 +129,9 @@ null_ls.setup({
 		null_ls.builtins.formatting.gofumpt,
 		-- null_ls.builtins.diagnostics.golangci_lint,
 
-		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.stylua.with({
+			extra_args = { "--column-width=140" },
+		}),
 
 		-- for angular
 		require("typescript.extensions.null-ls.code-actions"),
@@ -131,15 +146,20 @@ local cmp_select_opts = { behavior = cmp.SelectBehavior.Select }
 cmp.setup({
 	formatting = cmp_format,
 	sources = {
-		{ name = "path" },
-		{ name = "nvim_lsp" },
-		{ name = "buffer", keyword_length = 3 },
-		{ name = "luasnip", keyword_length = 2 },
+		{ name = "luasnip", keyword_length = 1 }, -- prefer luasnip over lsp because of convenient
+		{ name = "buffer", keyword_length = 2 },
+		{ name = "nvim_lsp", keyword_length = 2 },
+		{ name = "path", keyword_length = 2 },
 		{ name = "nvim_lsp_signature_help" },
 	},
 	window = {
 		completion = cmp.config.window.bordered(),
 		documentation = cmp.config.window.bordered(),
+	},
+	snippet = {
+		expand = function(args)
+			require("luasnip").lsp_expand(args.body)
+		end,
 	},
 	mapping = {
 		["<C-k>"] = cmp.mapping.confirm({ select = true }),

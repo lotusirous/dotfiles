@@ -10,69 +10,104 @@ local rep = require("luasnip.extras").rep
 local fmta = require("luasnip.extras.fmt").fmta -- similar to fmt with <> placeholder
 
 ls.add_snippets("go", {
-	s("pf", fmta([[
+	s(
+		"pf",
+		fmta(
+			[[
 // <> <>
 func <>(<>) <> {
 	<>
 }<>
-	 ]], {
-		rep(1),
-		i(4, "..."),
-		i(1, ""),
-		i(2, ""),
-		i(3),
-		i(5),
-		i(6),
-	}, { repeat_duplicates = true }) ),
+	 ]],
+			{
+				rep(1),
+				i(4, "..."),
+				i(1, ""),
+				i(2, ""),
+				i(3),
+				i(5),
+				i(6),
+			},
+			{ repeat_duplicates = true }
+		)
+	),
 
-	s("mpf", fmta([[
+	s(
+		"mpf",
+		fmta(
+			[[
 // <> <>
 func (<>) <>(<>) <> {
 	<>
 }<>
-	 ]], {
-		rep(2),
-		i(5, "..."),
-		i(1, ""),
-		i(2, ""),
-		i(3),
-		i(4),
-		i(6),
-		i(7),
-	}, { repeat_duplicates = true }) ),
+	 ]],
+			{
+				rep(2),
+				i(5, "..."),
+				i(1, ""),
+				i(2, ""),
+				i(3),
+				i(4),
+				i(6),
+				i(7),
+			},
+			{ repeat_duplicates = true }
+		)
+	),
 
-	s("ref", fmta([[
+	s(
+		"ref",
+		fmta(
+			[[
 [<>]: <>
-	 ]], {
-		i(1),
-		i(2),
-	}, { repeat_duplicates = true }) ),
+	 ]],
+			{
+				i(1),
+				i(2),
+			},
+			{ repeat_duplicates = true }
+		)
+	),
 
-	s("tys", fmta([[
+	s(
+		"tys",
+		fmta(
+			[[
 // A <> <>
 type <> struct {
 	<>
 }<>
-	 ]], {
-		rep(1),
-		i(2),
-		i(1),
-		i(3),
-		i(4),
-	}, { repeat_duplicates = true }) ),
+	 ]],
+			{
+				rep(1),
+				i(2),
+				i(1),
+				i(3),
+				i(4),
+			},
+			{ repeat_duplicates = true }
+		)
+	),
 
-	s("tyi", fmta([[
+	s(
+		"tyi",
+		fmta(
+			[[
 // <> is <>
 type <> interface {
 	<>
 }<>
-	 ]], {
-		rep(1),
-		i(2),
-		i(1),
-		i(3),
-		i(4),
-	}, { repeat_duplicates = true }) ),
+	 ]],
+			{
+				rep(1),
+				i(2),
+				i(1),
+				i(3),
+				i(4),
+			},
+			{ repeat_duplicates = true }
+		)
+	),
 
 	s("ctx", { t("ctx context.Context") }),
 
@@ -80,26 +115,26 @@ type <> interface {
 		"webserver",
 		fmta(
 			[[
-    package main
+	package main
 
-    // HandleSample writes a hello message to response.
-    func HandleSample(w http.ResponseWriter, r *http.Request) {
-        w.Write([]byte("Hello world"))
-    }
+	// HandleSample writes a hello message to response.
+	func HandleSample(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello world"))
+	}
 
-    func main() {
-        addr := <port>
-        r := http.NewServeMux()
-        r.HandleFunc("/", HandleSample)
-        svr := &http.Server{
-            Addr:    addr,
-            Handler: r,
-        }
-        log.Println("server started: ", addr)
-        log.Fatal(svr.ListenAndServe())
-    }
+	func main() {
+		addr := <port>
+		r := http.NewServeMux()
+		r.HandleFunc("/", HandleSample)
+		svr := &http.Server{
+			Addr:    addr,
+			Handler: r,
+		}
+		log.Println("server started: ", addr)
+		log.Fatal(svr.ListenAndServe())
+	}
 
-    ]],
+	]],
 			{
 				port = i(1, '":1234"'),
 			}
@@ -110,20 +145,20 @@ type <> interface {
 		"newreq",
 		fmta(
 			[[
-        req, err := http.NewRequest("<method>", endpoint, buf)
-        if err != nil {
-            <ret>
-        }
+		req, err := http.NewRequest("<method>", endpoint, buf)
+		if err != nil {
+			<ret>
+		}
 
-        req = req.WithContext(ctx)
-        req.Header.Add("Content-Type", "application/json")
-        res, err := s.client().Do(req)
-        if err != nil {
-            <ret>
-        }
-        defer res.Body.Close()
-        <ret>
-    ]],
+		req = req.WithContext(ctx)
+		req.Header.Add("Content-Type", "application/json")
+		res, err := s.client().Do(req)
+		if err != nil {
+			<ret>
+		}
+		defer res.Body.Close()
+		<ret>
+	]],
 			{
 				ret = c(1, {
 					t({ "return err" }),
@@ -139,13 +174,13 @@ type <> interface {
 		"tff",
 		fmta(
 			[[
-        func test<>(<>) func(*testing.T) {
-            return func(t *testing.T) {
-                <>
-            }
-        }
+		func test<>(<>) func(*testing.T) {
+			return func(t *testing.T) {
+				<>
+			}
+		}
 
-    ]],
+	]],
 			{
 				i(1),
 				i(2),
@@ -158,25 +193,25 @@ type <> interface {
 		"tbl",
 		fmta(
 			[[
-        tests := []struct {
-            in   <intype>
-            want <wanttype>
-        }{
-            {<data>},
-        }
+		tests := []struct {
+			name string
+			in   <intype>
+			want <wanttype>
+		}{
+			{<data>},
+		}
 
-        for _, tt := range tests {
-            got := <fn>(tt.in)
-            if !cmp.Equal(got, tt.want) {
-                t.Errorf("input : %v - got: %v - want: %v", tt.in, got, tt.want)
-            }
-        }
-    ]],
+		for _, test := range tests {
+			t.Run(test.name, func(t *testing.T) {
+				<code>
+			})
+		}
+]],
 			{
-				intype = i(1, "input type"),
-				wanttype = i(2, "want type"),
+				intype = i(1, "string"),
+				wanttype = i(2, "string"),
 				data = i(3, "data"),
-				fn = i(4, "function"),
+				code = i(4, "code"),
 			},
 			{ repeat_duplicates = true }
 		)
@@ -186,10 +221,10 @@ type <> interface {
 		"iferr",
 		fmta(
 			[[
-        if err != nil {
-            <>
-        }
-    ]],
+		if err != nil {
+			<>
+		}
+	]],
 			{
 				c(1, {
 					t({ "return err" }),
@@ -223,13 +258,13 @@ func <fn>(<>) http.HandlerFunc {
 		"fmax",
 		fmta(
 			[[
-    func max(x, y int) int {
-        if x > y {
-            return x
-        }
-        return y
-    }[]
-    ]],
+	func max(x, y int) int {
+		if x > y {
+			return x
+		}
+		return y
+	}[]
+	]],
 			i(1, ""),
 			{ delimiters = "[]" }
 		)
@@ -239,13 +274,13 @@ func <fn>(<>) http.HandlerFunc {
 		"fmin",
 		fmta(
 			[[
-    func min(x, y int) int {
-        if x < y {
-            return x
-        }
-        return y
-    }[]
-    ]],
+	func min(x, y int) int {
+		if x < y {
+			return x
+		}
+		return y
+	}[]
+	]],
 			i(1, ""),
 			{ delimiters = "[]" }
 		)

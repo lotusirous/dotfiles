@@ -28,3 +28,10 @@
 "
 "
 let g:gotests_template = ""
+
+
+
+command! -bang -nargs=? GoDoc
+        \ call fzf#run(fzf#wrap({ 'source': 'stdsym '.shellescape(<q-args>) }, <bang>0))
+
+
