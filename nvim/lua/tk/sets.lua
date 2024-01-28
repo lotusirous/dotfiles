@@ -64,18 +64,12 @@ vim.g.NERDTreeShowHidden = 1
 vim.g.NERDTreeWinSize = 45
 vim.g.NERDTreeHijackNetrw = 1
 
--- vim.opt.list = true -- invisible chars
--- vim.opt.listchars:append("eol:¬")
 
--- vim.opt.listchars = {
--- eol = "¬",
--- 	tab = "    ", --"  ▸", -- Alternatives: '▷▷',
--- 	extends = "›", -- Alternatives: … »
--- precedes = "‹", -- Alternatives: … «
--- trail = "•", -- BULLET (U+2022, UTF-8: E2 80 A2), Alternatives: ·
--- 	lead = "⋅",
--- 	multispace = "⋅",
--- }
+-- vim.opt.list = true
+-- vim.opt.listchars = { eol = "⤦", tab = "│ ", trail = "⋅", extends = ">", precedes = "<" }
+-- vim.opt.listchars:append({trail = "⋅"})
+
+
 
 -- Python host programs
 vim.g.python_host_prog = vim.env.HOME .. "/.pyenv/versions/2.7.18/bin/python"
@@ -88,8 +82,14 @@ vim.o.spelloptions = "camel"
 -- better for reading a log pop up message.
 vim.wo.linebreak = true
 
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
 -- Set grep default grep command with ripgrep
 -- vim.opt.grepprg = "rg --vimgrep --follow"
 -- vim.opt.errorformat:append("%f:%l:%c%p%m")
+
+
+-- For ufo
+vim.o.fillchars = [[eob: ,fold: ,foldopen: ,foldsep: ,foldclose:>]]
+vim.o.foldcolumn = "1" -- '0' is not bad
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true

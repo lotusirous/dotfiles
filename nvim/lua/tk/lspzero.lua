@@ -1,12 +1,6 @@
 local lsp_zero = require("lsp-zero").preset({})
 
-vim.o.fillchars = [[eob: ,fold: ,foldopen: ,foldsep: ,foldclose:>]]
-vim.o.foldcolumn = "1" -- '0' is not bad
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
 
-require("ufo").setup({})
 
 -- Fix Undefined global 'vim'
 -- lsp.nvim_workspace()
@@ -61,84 +55,6 @@ require("mason-lspconfig").setup({
 		end,
 	},
 })
-
--- lsp_zero.format_on_save({
--- 	format_opts = {
--- 		async = false,
--- 		timeout_ms = 10000,
--- 	},
--- 	servers = {
--- 		-- the formatter will not run if your languages are not defined here.
--- 		["null-ls"] = {
--- 			"javascript",
--- 			"typescriptreact",
--- 			"elixir",
--- 			"html",
--- 			"sql",
--- 			"rust",
--- 			"typescript",
--- 			"lua",
--- 			"go",
--- 			"markdown",
--- 			"python",
--- 			"json",
--- 			"jsonc",
--- 			"proto",
--- 		},
--- 	},
--- })
---
-
-
--- local null_ls = require("null-ls")
-
--- local function get_extra_args()
--- 	local root = vim.fn.getcwd()
--- 	local angular_json = root .. "/angular.json"
--- 	local has_angular_json = vim.fn.filereadable(angular_json) == 1
--- 	local base = { "--no-trailing-whitespace" }
--- 	if has_angular_json then
--- 		table.insert(base, "--semi")
--- 	end
--- 	return base
--- end
-
--- null_ls.setup({
--- 	sources = {
--- 		-- Replace these with the tools you have installed
--- 		null_ls.builtins.diagnostics.eslint,
--- 		null_ls.builtins.formatting.mix,
--- 		null_ls.builtins.formatting.prettier.with({
--- 			filetypes = { "javascript", "typescriptreact", "typescript", "css", "html" },
--- 			exclude_filetypes = { "markdown" },
--- 			extra_args = { "--no-trailing-whitespace", "--semi" },
--- 		}),
-
--- 		null_ls.builtins.formatting.deno_fmt.with({
--- 			filetypes = { "markdown", "jsonc", "json" },
--- 		}),
-
--- 		null_ls.builtins.formatting.buf, -- protobuf
--- 		-- python
--- 		-- null_ls.builtins.formatting.black,
--- 		null_ls.builtins.formatting.ruff,
--- 		null_ls.builtins.formatting.isort,
--- 		-- rust
--- 		null_ls.builtins.formatting.rustfmt,
--- 		-- golang
--- 		null_ls.builtins.formatting.pg_format,
--- 		null_ls.builtins.formatting.goimports,
--- 		null_ls.builtins.formatting.gofumpt,
--- 		-- null_ls.builtins.diagnostics.golangci_lint,
-
--- 		null_ls.builtins.formatting.stylua.with({
--- 			extra_args = { "--column-width=140" },
--- 		}),
-
--- 		-- for angular
--- 		require("typescript.extensions.null-ls.code-actions"),
--- 	},
--- })
 
 local cmp = require("cmp")
 local cmp_action = require("lsp-zero.cmp").action()

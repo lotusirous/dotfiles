@@ -13,18 +13,9 @@ keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { noremap = true })
 keymap.set("v", "J", ":m '>+1<CR>gv=gv", { noremap = true })
 keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true })
 
---keymap.set("n", "<leader>gs", ":Git<CR>", { noremap = true })
--- keymap.set("n", "<leader>gs", ":Git<CR>", { noremap = true })
+
 keymap.set("n", "<leader>gs", ":FloatermNew --height=0.95 --width=0.95 --name=lazygit lazygit<CR>")
-keymap.set("n", "<leader>`", ":Marks<CR>", { noremap = true })
---keymap.set("n", "<C-p>", ":Files<CR>", { noremap = true })
-keymap.set("n", "<leader>b", ":Buffers<CR>", { noremap = true })
-keymap.set("n", "<leader>gg", ":GBrowse<CR>", { noremap = true })
-keymap.set("n", "<leader>gb", ":Git blame<CR>", { noremap = true })
-keymap.set("n", "<C-p>", ":Files<CR>", { noremap = true })
 -- RG result is better than Rg
-keymap.set("n", "<leader>rg", ":RG<CR>", { noremap = true })
-keymap.set("n", "<leader>ft", ":Filetypes<CR>", { noremap = true })
 
 keymap.set(
 	"n",
@@ -56,6 +47,3 @@ keymap.set("n", "<leader>m", ":NERDTreeFind<CR>", { noremap = true })
 keymap.set("n", "<leader>r", ":NERDTreeRefreshRoot<CR>", { noremap = true })
 
 keymap.set("c", "<F2>", "\\(.*\\)", { noremap = true })
-keymap.set("n", "<F12>", ":PackerSync<CR>", { noremap = true })
-
--- paste image in markdown
