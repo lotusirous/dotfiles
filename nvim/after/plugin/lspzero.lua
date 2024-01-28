@@ -49,32 +49,6 @@ lsp_zero.on_attach(function(client, bufnr)
 	end, opts)
 end)
 
-lsp_zero.format_on_save({
-	format_opts = {
-		async = false,
-		timeout_ms = 10000,
-	},
-	servers = {
-		-- the formatter will not run if your languages are not defined here.
-		["null-ls"] = {
-			"javascript",
-			"typescriptreact",
-			"elixir",
-			"html",
-			"sql",
-			"rust",
-			"typescript",
-			"lua",
-			"go",
-			"markdown",
-			"python",
-			"json",
-			"jsonc",
-			"proto",
-		},
-	},
-})
-
 require("mason").setup()
 require("mason-lspconfig").setup({
 	-- angularls and tsserver must be installed together in order to run the angularls
@@ -88,7 +62,35 @@ require("mason-lspconfig").setup({
 	},
 })
 
-local null_ls = require("null-ls")
+-- lsp_zero.format_on_save({
+-- 	format_opts = {
+-- 		async = false,
+-- 		timeout_ms = 10000,
+-- 	},
+-- 	servers = {
+-- 		-- the formatter will not run if your languages are not defined here.
+-- 		["null-ls"] = {
+-- 			"javascript",
+-- 			"typescriptreact",
+-- 			"elixir",
+-- 			"html",
+-- 			"sql",
+-- 			"rust",
+-- 			"typescript",
+-- 			"lua",
+-- 			"go",
+-- 			"markdown",
+-- 			"python",
+-- 			"json",
+-- 			"jsonc",
+-- 			"proto",
+-- 		},
+-- 	},
+-- })
+--
+
+
+-- local null_ls = require("null-ls")
 
 -- local function get_extra_args()
 -- 	local root = vim.fn.getcwd()
@@ -101,42 +103,42 @@ local null_ls = require("null-ls")
 -- 	return base
 -- end
 
-null_ls.setup({
-	sources = {
-		-- Replace these with the tools you have installed
-		null_ls.builtins.diagnostics.eslint,
-		null_ls.builtins.formatting.mix,
-		null_ls.builtins.formatting.prettier.with({
-			filetypes = { "javascript", "typescriptreact", "typescript", "css", "html" },
-			exclude_filetypes = { "markdown" },
-			extra_args = { "--no-trailing-whitespace", "--semi" },
-		}),
+-- null_ls.setup({
+-- 	sources = {
+-- 		-- Replace these with the tools you have installed
+-- 		null_ls.builtins.diagnostics.eslint,
+-- 		null_ls.builtins.formatting.mix,
+-- 		null_ls.builtins.formatting.prettier.with({
+-- 			filetypes = { "javascript", "typescriptreact", "typescript", "css", "html" },
+-- 			exclude_filetypes = { "markdown" },
+-- 			extra_args = { "--no-trailing-whitespace", "--semi" },
+-- 		}),
 
-		null_ls.builtins.formatting.deno_fmt.with({
-			filetypes = { "markdown", "jsonc", "json" },
-		}),
+-- 		null_ls.builtins.formatting.deno_fmt.with({
+-- 			filetypes = { "markdown", "jsonc", "json" },
+-- 		}),
 
-		null_ls.builtins.formatting.buf, -- protobuf
-		-- python
-		-- null_ls.builtins.formatting.black,
-		null_ls.builtins.formatting.ruff,
-		null_ls.builtins.formatting.isort,
-		-- rust
-		null_ls.builtins.formatting.rustfmt,
-		-- golang
-		null_ls.builtins.formatting.pg_format,
-		null_ls.builtins.formatting.goimports,
-		null_ls.builtins.formatting.gofumpt,
-		-- null_ls.builtins.diagnostics.golangci_lint,
+-- 		null_ls.builtins.formatting.buf, -- protobuf
+-- 		-- python
+-- 		-- null_ls.builtins.formatting.black,
+-- 		null_ls.builtins.formatting.ruff,
+-- 		null_ls.builtins.formatting.isort,
+-- 		-- rust
+-- 		null_ls.builtins.formatting.rustfmt,
+-- 		-- golang
+-- 		null_ls.builtins.formatting.pg_format,
+-- 		null_ls.builtins.formatting.goimports,
+-- 		null_ls.builtins.formatting.gofumpt,
+-- 		-- null_ls.builtins.diagnostics.golangci_lint,
 
-		null_ls.builtins.formatting.stylua.with({
-			extra_args = { "--column-width=140" },
-		}),
+-- 		null_ls.builtins.formatting.stylua.with({
+-- 			extra_args = { "--column-width=140" },
+-- 		}),
 
-		-- for angular
-		require("typescript.extensions.null-ls.code-actions"),
-	},
-})
+-- 		-- for angular
+-- 		require("typescript.extensions.null-ls.code-actions"),
+-- 	},
+-- })
 
 local cmp = require("cmp")
 local cmp_action = require("lsp-zero.cmp").action()

@@ -31,6 +31,7 @@ return require("packer").startup(function(use)
 			},
 
 			{ "williamboman/mason-lspconfig.nvim" },
+			{ "nvim-lua/plenary.nvim" },
 
 			-- Autocompletion
 			{ "hrsh7th/nvim-cmp" },
@@ -45,10 +46,10 @@ return require("packer").startup(function(use)
 			{ "L3MON4D3/LuaSnip" },
 			{ "rafamadriz/friendly-snippets" },
 			-- formatting
-			{
-				"jose-elias-alvarez/null-ls.nvim",
-				requires = { "nvim-lua/plenary.nvim" },
-			},
+			-- {
+			-- 	"jose-elias-alvarez/null-ls.nvim",
+			-- 	requires = ,
+			-- },
 			-- for typescript
 			{ "jose-elias-alvarez/typescript.nvim" },
 		},
@@ -122,4 +123,5 @@ return require("packer").startup(function(use)
 	use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
 	use({ "luukvbaal/statuscol.nvim" })
 	use({ "sindrets/diffview.nvim" })
+	use({ "stevearc/conform.nvim" })
 end)

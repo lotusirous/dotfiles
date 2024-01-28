@@ -56,5 +56,6 @@ keymap.set("n", "<leader>m", ":NERDTreeFind<CR>", { noremap = true })
 keymap.set("n", "<leader>r", ":NERDTreeRefreshRoot<CR>", { noremap = true })
 
 keymap.set("c", "<F2>", "\\(.*\\)", { noremap = true })
+keymap.set("n", "<F12>", ":PackerSync<CR>", { noremap = true })
 
 -- paste image in markdown
