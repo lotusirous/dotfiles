@@ -1,3 +1,23 @@
+local function live_dict()
+	require("fzf-lua").fzf_exec("cat ".. vim.env.HOME .. "/local/wordlist", {
+		preview = "wn {} -over | fold",
+		fzf_opts = { ['--preview-window'] = 'nohidden,right,80%' },
+		-- @param selected: the selected entry or entries
+		-- @param opts: fzf-lua caller/provider options
+		-- @param line: originating buffer completed line
+		-- @param col: originating cursor column location
+		-- @return newline: will replace the current buffer line
+		-- @return newcol?: optional, sets the new cursor column
+		complete = function(selected, opts, line, col)
+			local newline = line:sub(1, col) .. selected[1]
+			-- set cursor to EOL, since `nvim_win_set_cursor`
+			-- is 0-based we have to lower the col value by 1
+			return newline, #newline - 1
+		end
+	})
+end
+
+
 local keymap = vim.keymap
 
 -- Wonderful mapping
@@ -47,3 +67,4 @@ keymap.set("n", "<leader>m", ":NERDTreeFind<CR>", { noremap = true })
 keymap.set("n", "<leader>r", ":NERDTreeRefreshRoot<CR>", { noremap = true })
 
 keymap.set("c", "<F2>", "\\(.*\\)", { noremap = true })
+keymap.set("i", "<c-x><c-l>", live_dict, { noremap = true })

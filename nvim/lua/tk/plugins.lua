@@ -12,7 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
-	{ "numToStr/Comment.nvim", opts = {}, event = "VeryLazy" },
+	{ "numToStr/Comment.nvim",  opts = {},         event = "VeryLazy" },
 	{
 		"ThePrimeagen/harpoon",
 		event = "VeryLazy",
@@ -121,19 +121,7 @@ local plugins = {
 	},
 	-- "lewis6991/gitsigns.nvim",
 
-	{ "voldikss/vim-floaterm", event = "VeryLazy" },
-	{
-		"rgroli/other.nvim",
-		event = "VeryLazy",
-		keys = {
-			{ "<leader>ll", ":Other<CR>", desc = "Jump to other files" },
-		},
-		config = function()
-			require("other-nvim").setup({
-				mappings = { "golang", "angular" },
-			})
-		end,
-	},
+	{ "voldikss/vim-floaterm",  event = "VeryLazy" },
 	{ "sindrets/diffview.nvim", event = "VeryLazy" },
 
 	{
@@ -208,13 +196,13 @@ local plugins = {
 	-- "buoto/gotests-vim",
 	-- "mattn/vim-goaddtags",
 
-	{ "mbbill/undotree", event = "VeryLazy" },
+	{ "mbbill/undotree",           event = "VeryLazy" },
 	"preservim/nerdtree",
-	{ "tpope/vim-unimpaired", event = "VeryLazy" },
-	{ "tpope/vim-fugitive", event = "VeryLazy" },
-	{ "tpope/vim-rhubarb", event = "VeryLazy" },
-	{ "tpope/vim-sleuth", event = "VeryLazy" },
-	{ "preservim/tagbar", event = "VeryLazy" },
+	{ "tpope/vim-unimpaired",      event = "VeryLazy" },
+	{ "tpope/vim-fugitive",        event = "VeryLazy" },
+	{ "tpope/vim-rhubarb",         event = "VeryLazy" },
+	{ "tpope/vim-sleuth",          event = "VeryLazy" },
+	{ "preservim/tagbar",          event = "VeryLazy" },
 	{ "AndrewRadev/splitjoin.vim", event = "VeryLazy" },
 	"nvim-lua/plenary.nvim",
 	{
@@ -246,8 +234,8 @@ local plugins = {
 					require("statuscol").setup({
 						relculright = true,
 						segments = {
-							{ text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-							{ text = { "%s" }, click = "v:lua.ScSa" },
+							{ text = { builtin.foldfunc },      click = "v:lua.ScFa" },
+							{ text = { "%s" },                  click = "v:lua.ScSa" },
 							{ text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
 						},
 					})
@@ -264,14 +252,14 @@ local plugins = {
 		opts = {},
 		event = "VeryLazy",
 		keys = {
-			{ "<leader>ft", "<cmd>Neotree toggle<cr>", desc = "NeoTree" },
-			{ "<leader>`", ":FzfLua marks<CR>", desc = "list all marks" },
-			{ "<leader>b", ":FzfLua buffers<CR>", desc = "list all buffers" },
-			{ "<C-p>", ":FzfLua files<CR>", desc = "list all files" },
-			{ "<leader>fs", ":FzfLua lsp_document_symbols<CR>", desc = "Document Symbols" },
+			{ "<leader>ft", "<cmd>Neotree toggle<cr>",                desc = "NeoTree" },
+			{ "<leader>`",  ":FzfLua marks<CR>",                      desc = "list all marks" },
+			{ "<leader>b",  ":FzfLua buffers<CR>",                    desc = "list all buffers" },
+			{ "<C-p>",      ":FzfLua files<CR>",                      desc = "list all files" },
+			{ "<leader>fs", ":FzfLua lsp_document_symbols<CR>",       desc = "Document Symbols" },
 			{ "<leader>fw", ":FzfLua lsp_live_workspace_symbols<CR>", desc = "Workspace Symbols (live query)" },
-			{ "<leader>rg", ":FzfLua live_grep_native<CR>", desc = "rg the project" },
-			{ "<leader>ft", ":FzfLua filetypes<CR>", desc = "define current buffer file type" },
+			{ "<leader>rg", ":FzfLua live_grep_native<CR>",           desc = "rg the project" },
+			{ "<leader>ft", ":FzfLua filetypes<CR>",                  desc = "define current buffer file type" },
 		},
 	},
 
@@ -289,8 +277,32 @@ local plugins = {
 	},
 
 	{
+		"L3MON4D3/LuaSnip",
+		dependencies = { { "rafamadriz/friendly-snippets" } },
+		event = "VeryLazy",
+		config = function()
+			require("luasnip.loaders.from_vscode").lazy_load()
+			require("luasnip").config.set_config({
+				history = false,
+				enable_autosnippets = true,
+				-- treesitter-hl has 100, use something higher (default is 200).
+				ext_base_prio = 300,
+				-- minimal increase in priority.
+				ext_prio_increase = 1,
+				-- Update more often, :h events for more info.
+				updateevents = "TextChanged,TextChangedI",
+			})
+
+			require("tk.snippets.all")
+			require("tk.snippets.go")
+			require("tk.snippets.js")
+			require("tk.snippets.json")
+			require("tk.snippets.md")
+		end,
+	},
+	{
 		"hrsh7th/nvim-cmp",
-		event = "InsertEnter",
+		event = "VeryLazy",
 		dependencies = {
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-path" },
@@ -298,29 +310,6 @@ local plugins = {
 			{ "hrsh7th/cmp-nvim-lsp" },
 			{ "hrsh7th/cmp-nvim-lua" },
 			{ "hrsh7th/cmp-nvim-lsp-signature-help" },
-			{
-				"L3MON4D3/LuaSnip",
-				dependencies = { { "rafamadriz/friendly-snippets" } },
-				config = function()
-					require("luasnip.loaders.from_vscode").lazy_load()
-					require("luasnip").config.set_config({
-						history = false,
-						enable_autosnippets = true,
-						-- treesitter-hl has 100, use something higher (default is 200).
-						ext_base_prio = 300,
-						-- minimal increase in priority.
-						ext_prio_increase = 1,
-						-- Update more often, :h events for more info.
-						updateevents = "TextChanged,TextChangedI",
-					})
-
-					require("tk.snippets.all")
-					require("tk.snippets.go")
-					require("tk.snippets.js")
-					require("tk.snippets.json")
-					require("tk.snippets.md")
-				end,
-			},
 		},
 	},
 	{
@@ -335,6 +324,17 @@ local plugins = {
 			-- LSP Support
 			"neovim/nvim-lspconfig",
 			"williamboman/mason-lspconfig.nvim",
+			{
+				"rgroli/other.nvim",
+				keys = {
+					{ "<leader>ll", ":Other<CR>", desc = "Jump to other files" },
+				},
+				config = function()
+					require("other-nvim").setup({
+						mappings = { "golang", "angular" },
+					})
+				end,
+			},
 		},
 	},
 	{
