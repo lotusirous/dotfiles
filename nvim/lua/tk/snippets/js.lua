@@ -1,15 +1,9 @@
 local ls = require("luasnip")
+-- some shorthands...
 local s = ls.snippet
--- local t = ls.text_node
-local i = ls.insert_node
--- local f = ls.function_node
-local rep = require("luasnip.extras").rep
-local fmt = require("luasnip.extras.fmt").fmt
-
-ls.add_snippets("javascript", {
-	ls.parser.parse_snippet({ trig = "log", wordTrig = false }, "console.log(${1})"),
-	s("req", fmt("const {} = require('{}')", { i(1, "default"), rep(1) })),
-	s("logp", fmt("console.log('[+] {}')", { i(1, "") })),
-}, {
-	key = "javascript",
-})
+-- local i = ls.insert_node
+-- local c = ls.choice_node
+local f = ls.function_node
+-- local rep = require("luasnip.extras").rep
+-- local fmt = require("luasnip.extras.fmt").fmt
+local fmta = require("luasnip.extras.fmt").fmta -- similar to fmt with <> placeholder
