@@ -13,6 +13,20 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
 	{
+		"folke/persistence.nvim",
+		event = "BufReadPre",
+		opts = {
+			dir = vim.fn.expand(vim.fn.stdpath("state") .. "/sessions/"), -- directory where session files are saved
+			options = { "buffers", "curdir", "tabpages", "winsize" }, -- sessionoptions used for saving
+			pre_save = nil, -- a function to call before saving the session
+			save_empty = false, -- don't save if there are no open file buffers
+		},
+		config = function(_, opts)
+			require("persistence").setup(opts)
+			vim.keymap.set("n", "<leader>ql", require("persistence").load)
+		end,
+	},
+	{
 		"lewis6991/gitsigns.nvim",
 		event = "VeryLazy",
 		config = function()
@@ -91,13 +105,6 @@ local plugins = {
 		},
 	},
 	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-		config = function()
-			require("tk.autopairs")
-		end,
-	},
-	{
 		"ellisonleao/gruvbox.nvim",
 		priority = 1000,
 		lazy = false,
@@ -143,6 +150,29 @@ local plugins = {
 				section_separators = "",
 				theme = "gruvbox-material",
 			},
+			sections = {
+				lualine_c = {
+					{
+						"filename",
+						file_status = true, -- Displays file status (readonly status, modified status)
+						newfile_status = false, -- Display new file status (new file means no write after created)
+						path = 1, -- 0: Just the filename
+						-- 1: Relative path
+						-- 2: Absolute path
+						-- 3: Absolute path, with tilde as the home directory
+						-- 4: Filename and parent dir, with tilde as the home directory
+
+						shorting_target = 40, -- Shortens path to leave 40 spaces in the window
+						-- for other components. (terrible name, any suggestions?)
+						symbols = {
+							modified = "[+]", -- Text to show when the file is modified.
+							readonly = "[-]", -- Text to show when the file is non-modifiable or readonly.
+							unnamed = "[No Name]", -- Text to show for unnamed buffers.
+							newfile = "[New]", -- Text to show for newly created file before first write
+						},
+					},
+				},
+			},
 		},
 	},
 
@@ -160,31 +190,19 @@ local plugins = {
 				harpoon.ui:toggle_quick_menu(harpoon:list())
 			end)
 
-			vim.keymap.set("n", "<C-0>", function()
+			vim.keymap.set("n", "<F8>", function()
 				harpoon:list():select(1)
 			end)
-			vim.keymap.set("n", "<C-9>", function()
+			vim.keymap.set("n", "<F7>", function()
 				harpoon:list():select(2)
 			end)
-
-			-- local mark = require("harpoon.mark")
-			-- local ui = require("harpoon.ui")
-			--
-			-- vim.keymap.set("n", "<C-n>", mark.add_file)
-			-- vim.keymap.set("n", "<C-m>", ui.toggle_quick_menu)
-			--
-			-- vim.keymap.set("n", "<C-0>", function()
-			-- 	ui.nav_file(1)
-			-- end)
-			-- vim.keymap.set("n", "<C-9>", function()
-			-- 	ui.nav_file(2)
-			-- end)
-			-- vim.keymap.set("n", "<C-8>", function()
-			-- 	ui.nav_file(3)
-			-- end)
-			-- vim.keymap.set("n", "<C-7>", function()
-			-- 	ui.nav_file(4)
-			-- end)
+			vim.keymap.set("n", "<F6>", function()
+				harpoon:list():select(3)
+			end)
+			vim.keymap.set("n", "<F5>", function()
+				harpoon:list():select(4)
+			end)
+			vim.keymap.del("n", "<CR>")
 		end,
 	},
 	{ "numToStr/Comment.nvim", opts = {}, event = "VeryLazy" },
@@ -256,7 +274,7 @@ local plugins = {
 						end
 					end,
 					-- Use the "*" filetype to run formatters on all filetypes.
-					["*"] = { "codespell" },
+					["*"] = { "typos" },
 					-- Use the "_" filetype to run formatters on filetypes that don't
 					-- have other formatters configured.
 					["_"] = { "trim_whitespace" },
@@ -318,12 +336,14 @@ local plugins = {
 		keys = {
 			{ "<leader>ft", "<cmd>Neotree toggle<cr>", desc = "NeoTree" },
 			{ "<leader>`", ":FzfLua marks<CR>", desc = "list all marks" },
-			{ "<leader>b", ":FzfLua buffers<CR>", desc = "list all buffers" },
+			{ "<leader>b", ":FzfLua buffers<CR>", desc = "List all buffers" },
 			{ "<C-p>", ":FzfLua files<CR>", desc = "list all files" },
 			{ "<leader>fs", ":FzfLua lsp_document_symbols<CR>", desc = "Document Symbols" },
 			{ "<leader>fw", ":FzfLua lsp_live_workspace_symbols<CR>", desc = "Workspace Symbols (live query)" },
 			{ "<leader>rg", ":FzfLua live_grep_native<CR>", desc = "rg the project" },
-			{ "<leader>ft", ":FzfLua filetypes<CR>", desc = "define current buffer file type" },
+			{ "<leader>ft", ":FzfLua filetypes<CR>", desc = "Select file type for current buffer" },
+			{ "<leader>km", ":FzfLua keymaps<CR>", desc = "Shows all keymaps" },
+			{ "<leader>ca", ":FzfLua lsp_code_actions<CR>", desc = "Show the code action with preview" },
 		},
 	},
 
@@ -338,7 +358,7 @@ local plugins = {
 			},
 			{ "nvim-treesitter/nvim-treesitter-textobjects" },
 		},
-		config = function ()
+		config = function()
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = {
 					"go",
@@ -353,7 +373,7 @@ local plugins = {
 					"json",
 					"rust",
 				},
-				autotag = {enable = true},
+				autotag = { enable = true },
 				autopairs = { enable = true },
 				highlight = {
 					enable = true, -- false will disable the whole extension
@@ -415,7 +435,7 @@ local plugins = {
 				},
 			})
 
-			require'treesitter-context'.setup({
+			require("treesitter-context").setup({
 				enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
 				line_numbers = true,
 				trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
@@ -426,7 +446,7 @@ local plugins = {
 				zindex = 20, -- The Z-index of the context window
 				on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 			})
-		end
+		end,
 	},
 
 	{
@@ -462,12 +482,43 @@ local plugins = {
 			{ "hrsh7th/cmp-nvim-lsp" },
 			{ "hrsh7th/cmp-nvim-lua" },
 			{ "hrsh7th/cmp-nvim-lsp-signature-help" },
+			{
+				"windwp/nvim-autopairs",
+				event = "InsertEnter",
+				opts = {
+					check_ts = true,
+					ts_config = {
+						lua = { "string", "source" },
+						javascript = { "string", "template_string" },
+						java = false,
+					},
+					-- fast_wrap = {
+					-- 	map = "<M-e>",
+					-- 	chars = { "{", "[", "(", '"' },
+					-- 	pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
+					-- 	offset = 0, -- Offset from pattern match
+					-- 	end_key = "$",
+					-- 	keys = "qwertyuiopzxcvbnmasdfghjkl",
+					-- 	check_comma = true,
+					-- 	highlight = "PmenuSel",
+					-- 	highlight_grey = "LineNr",
+					-- },
+				},
+				config = function(_, opts)
+					require("nvim-autopairs").setup(opts)
+					require("nvim-autopairs").get_rules("'")[1].not_filetypes = { "scheme", "lisp", "rust" }
+				end,
+			},
 		},
 		config = function()
 			local lsp_zero = require("lsp-zero")
 			lsp_zero.extend_cmp()
 
+			-- on complete
 			local cmp = require("cmp")
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+
 			local ls = require("luasnip")
 			local cmp_action = require("lsp-zero").cmp_action()
 
@@ -557,6 +608,17 @@ local plugins = {
 		dependencies = {
 			"AndrewRadev/splitjoin.vim",
 			"williamboman/mason-lspconfig.nvim",
+			-- {
+			-- 	"nvimdev/lspsaga.nvim",
+			-- 	event = "LspAttach",
+			-- 	config = function(_, opts)
+			-- 		require("lspsaga").setup({
+			-- 			ui = {
+			-- 				code_action = "💡",
+			-- 			},
+			-- 		})
+			-- 	end,
+			-- },
 			{
 				"rgroli/other.nvim",
 				keys = {
@@ -609,9 +671,9 @@ local plugins = {
 				vim.keymap.set("n", "<leader>q", function()
 					vim.diagnostic.setqflist()
 				end, opts)
-				vim.keymap.set("n", "<leader>ca", function()
-					vim.lsp.buf.code_action()
-				end, opts)
+				-- vim.keymap.set("n", "<leader>ca", function()
+				-- 	vim.lsp.buf.code_action()
+				-- end, opts)
 				vim.keymap.set("n", "<leader>cl", function()
 					vim.lsp.codelens.run()
 				end, opts)

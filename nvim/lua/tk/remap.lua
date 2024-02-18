@@ -1,7 +1,7 @@
 local function live_dict()
-	require("fzf-lua").fzf_exec("cat ".. vim.env.HOME .. "/local/wordlist", {
+	require("fzf-lua").fzf_exec("cat " .. vim.env.HOME .. "/local/wordlist", {
 		preview = "wn {} -over | fold",
-		fzf_opts = { ['--preview-window'] = 'nohidden,right,80%' },
+		fzf_opts = { ["--preview-window"] = "nohidden,right,80%" },
 		-- @param selected: the selected entry or entries
 		-- @param opts: fzf-lua caller/provider options
 		-- @param line: originating buffer completed line
@@ -13,10 +13,9 @@ local function live_dict()
 			-- set cursor to EOL, since `nvim_win_set_cursor`
 			-- is 0-based we have to lower the col value by 1
 			return newline, #newline - 1
-		end
+		end,
 	})
 end
-
 
 local keymap = vim.keymap
 
@@ -44,7 +43,7 @@ keymap.set("n", "<leader>gs", ":FloatermNew --height=0.95 --width=0.95 --wintype
 keymap.set("n", "<leader>fm", vim.lsp.buf.format, { noremap = true })
 
 -- Tagbar
-keymap.set("n", "<F8>", ":TagbarToggle<CR>", { noremap = true })
+keymap.set("n", "<F9>", ":TagbarToggle<CR>", { noremap = true })
 
 -- Copy to system clipboard
 keymap.set("n", "<leader>y", '"+y', { noremap = true })

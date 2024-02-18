@@ -1,0 +1,13 @@
+{
+    "name": "custom typescript snippets",
+    "contributes": {
+      "snippets": [
+        {
+          "language": [
+            "typescript"
+          ],
+          "path": "./angular.json"
+        }
+      ]
+    }
+  }

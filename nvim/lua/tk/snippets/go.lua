@@ -10,21 +10,31 @@ local rep = require("luasnip.extras").rep
 local fmta = require("luasnip.extras.fmt").fmta -- similar to fmt with <> placeholder
 
 ls.add_snippets("go", {
-	s("handts", fmta(
-		[[ 
+	s(
+		"handts",
+		fmta(
+			[[ 
 ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello, client")
 }))
 defer ts.Close()
-	]], {}
-), { repeat_duplicates = true }),
-	s("handtest", fmta(
-		[[ 
+	]],
+			{}
+		),
+		{ repeat_duplicates = true }
+	),
+	s(
+		"handtest",
+		fmta(
+			[[ 
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("POST", "/", in)
 	Handle<>(<>)(w, r)
-	]], {i(1), i(2)}
-), { repeat_duplicates = true }),
+	]],
+			{ i(1), i(2) }
+		),
+		{ repeat_duplicates = true }
+	),
 
 	s(
 		"pf",
@@ -199,13 +209,13 @@ type <> interface {
             in   <intype>
             want <wanttype>
         }{
-            {<data>},
+            {in: <data>},
         }
 
         for _, tc := range cases {
             got := <fn>(tc.in)
-            if !cmp.Equal(got, tc.want) {
-                t.Errorf("input : %v - got: %v - want: %v", tc.in, got, tc.want)
+            if got != tc.want {
+                t.Errorf("<fn>(%v) = %v; want %v", tc.in, got, tc.want)
             }
         }
     ]],
