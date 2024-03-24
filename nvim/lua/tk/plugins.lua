@@ -12,6 +12,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
+	"ThePrimeagen/vim-be-good",
+	{ "christoomey/vim-tmux-navigator", lazy = false },
 	{
 		"folke/persistence.nvim",
 		event = "BufReadPre",
@@ -73,6 +75,13 @@ local plugins = {
 					enable = false,
 				},
 			})
+
+			vim.keymap.set("n", "<leader>ga", "<Cmd>lua require'gitsigns'.stage_hunk()<cr>")
+			vim.keymap.set("n", "<leader>gr", "<Cmd>lua require'gitsigns'.reset_hunk()<cr>")
+			vim.keymap.set("n", "<leader>gu", "<Cmd>lua require'gitsigns'.undo_stage_hunk()<cr>")
+			vim.keymap.set("n", "<leader>gp", "<Cmd>lua require'gitsigns'.preview_hunk()<cr>")
+			vim.keymap.set("n", "<leader>gd", "<Cmd>lua require'gitsigns'.diffthis()<cr>")
+			vim.keymap.set("n", "<leader>gD", "<Cmd>lua require'gitsigns'.diffthis('~')<cr>")
 		end,
 	},
 	{
@@ -151,6 +160,7 @@ local plugins = {
 				theme = "gruvbox-material",
 			},
 			sections = {
+				lualine_b = { "branch", "diff", "grapple" },
 				lualine_c = {
 					{
 						"filename",
@@ -177,33 +187,20 @@ local plugins = {
 	},
 
 	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		event = "VeryLazy",
-		config = function()
-			local harpoon = require("harpoon")
-			harpoon:setup()
-			vim.keymap.set("n", "<C-n>", function()
-				harpoon:list():append()
-			end)
-			vim.keymap.set("n", "<C-m>", function()
-				harpoon.ui:toggle_quick_menu(harpoon:list())
-			end)
-
-			vim.keymap.set("n", "<F8>", function()
-				harpoon:list():select(1)
-			end)
-			vim.keymap.set("n", "<F7>", function()
-				harpoon:list():select(2)
-			end)
-			vim.keymap.set("n", "<F6>", function()
-				harpoon:list():select(3)
-			end)
-			vim.keymap.set("n", "<F5>", function()
-				harpoon:list():select(4)
-			end)
-			vim.keymap.del("n", "<CR>")
-		end,
+		"cbochs/grapple.nvim",
+		opts = {
+			scope = "git_branch", -- also try out "git_branch"
+			icons = false,
+			status = true,
+		},
+		keys = {
+			{ "<C-n>", "<cmd>Grapple toggle<cr>", desc = "Tag a file" },
+			{ "<C-e>", "<cmd>Grapple toggle_tags<cr>", desc = "Toggle tags menu" },
+			{ "<leader>h", "<cmd>Grapple select index=1<cr>", desc = "Select first tag" },
+			{ "<leader>j", "<cmd>Grapple select index=2<cr>", desc = "Select second tag" },
+			{ "<leader>k", "<cmd>Grapple select index=3<cr>", desc = "Select third tag" },
+			{ "<leader>l", "<cmd>Grapple select index=4<cr>", desc = "Select fourth tag" },
+		},
 	},
 	{ "numToStr/Comment.nvim", opts = {}, event = "VeryLazy" },
 	{ "voldikss/vim-floaterm", event = "VeryLazy" },
@@ -260,6 +257,8 @@ local plugins = {
 					go = { "goimports", "gofumpt" },
 					-- Use a sub-list to run only the first available formatter
 					javascript = { { "prettier" } },
+					json = { { "deno_fmt" } },
+					jsonc = { { "deno_fmt" } },
 					bash = { { "shfmt" } },
 					rust = { { "rustfmt" } },
 					css = { { "prettier" } },
@@ -286,9 +285,13 @@ local plugins = {
 	},
 	{ "mbbill/undotree", event = "VeryLazy" },
 	"preservim/nerdtree",
+	-- "justinmk/vim-dirvish",
 	{ "tpope/vim-unimpaired", event = "VeryLazy" },
 	{ "tpope/vim-abolish", event = "VeryLazy" },
-	{ "tpope/vim-fugitive", event = "VeryLazy" },
+	{
+		"tpope/vim-fugitive",
+		event = "VeryLazy",
+	},
 	{ "tpope/vim-rhubarb", event = "VeryLazy" },
 	{ "tpope/vim-sleuth", event = "VeryLazy" },
 	{ "preservim/tagbar", event = "VeryLazy" },
@@ -362,6 +365,7 @@ local plugins = {
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = {
 					"go",
+					"rust",
 					"lua",
 					"python",
 					"javascript",
@@ -371,7 +375,7 @@ local plugins = {
 					"markdown",
 					"yaml",
 					"json",
-					"rust",
+					"jsonc",
 				},
 				autotag = { enable = true },
 				autopairs = { enable = true },
@@ -468,7 +472,7 @@ local plugins = {
 
 			require("tk.snippets.all")
 			require("tk.snippets.go")
-			require("tk.snippets.js")
+			require("tk.snippets.rust")
 			require("tk.snippets.json")
 		end,
 	},
@@ -622,7 +626,7 @@ local plugins = {
 			{
 				"rgroli/other.nvim",
 				keys = {
-					{ "<leader>ll", ":Other<CR>", desc = "Jump to other files" },
+					{ "<leader>o", ":Other<CR>", desc = "Jump to other files" },
 				},
 				config = function()
 					require("other-nvim").setup({
@@ -736,6 +740,23 @@ local plugins = {
 		end,
 		config = function(_, opts)
 			require("statuscol").setup(opts)
+		end,
+	},
+	{
+		"ThePrimeagen/git-worktree.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+		},
+		config = function(_, opts)
+			require("git-worktree").setup()
+			require("telescope").load_extension("git_worktree")
+			vim.keymap.set("n", "<leader>gb", function()
+				require("telescope").extensions.git_worktree.create_git_worktree()
+			end)
+			vim.keymap.set("n", "<leader>gt", function()
+				require("telescope").extensions.git_worktree.git_worktrees()
+			end)
 		end,
 	},
 }

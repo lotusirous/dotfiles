@@ -25,14 +25,15 @@ vim.g.mapleader = " "
 
 -- Keymap
 keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { noremap = true })
+keymap.set("v", "<leader>gb", ":GBrowse<CR>", { noremap = true })
 
 -- Moving window
-keymap.set("n", "<C-j>", "<C-w>j", { noremap = true })
-keymap.set("n", "<C-k>", "<C-w>k", { noremap = true })
-keymap.set("n", "<C-l>", "<C-w>l", { noremap = true })
-keymap.set("n", "<C-h>", "<C-w>h", { noremap = true })
-keymap.set("n", "<c-,>", "<C-w>5>", { noremap = true })
-keymap.set("n", "<c-.>", "<C-w>5<", { noremap = true })
+-- keymap.set("n", "<C-j>", "<C-w>j", { noremap = true })
+-- keymap.set("n", "<C-k>", "<C-w>k", { noremap = true })
+-- keymap.set("n", "<C-l>", "<C-w>l", { noremap = true })
+-- keymap.set("n", "<C-h>", "<C-w>h", { noremap = true })
+keymap.set("n", "<m-,>", "<C-w>5>", { noremap = true })
+keymap.set("n", "<m-.>", "<C-w>5<", { noremap = true })
 
 -- moving line
 keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -50,9 +51,9 @@ keymap.set("n", "<leader>y", '"+y', { noremap = true })
 keymap.set("v", "<leader>y", '"+y', { noremap = true })
 keymap.set("n", "<leader>Y", 'gg"+yG', { noremap = true })
 
-keymap.set("n", "<leader>n", ":NERDTreeToggle<CR>", { noremap = true })
+-- keymap.set("n", "<leader>n", ":NERDTreeToggle<CR>", { noremap = true })
 keymap.set("n", "<leader>m", ":NERDTreeFind<CR>", { noremap = true })
-keymap.set("n", "<leader>nr", ":NERDTreeRefreshRoot<CR>", { noremap = true })
+-- keymap.set("n", "<leader>nr", ":NERDTreeRefreshRoot<CR>", { noremap = true })
 
 keymap.set("c", "<F2>", "\\(.*\\)", { noremap = true })
 keymap.set("i", "<c-x><c-l>", live_dict, { noremap = true })
